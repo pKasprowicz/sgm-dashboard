@@ -3,17 +3,30 @@ var fs = require('fs');
 
 var app = express();
 
-app.use('/static', express.static(__dirname));
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jade')
+
+app.use(express.static(__dirname + '/public'))
 
 app.get('/dashboard', function(req, res)
 {
-	var html = fs.readFileSync('dashboard/dashboard.html','utf8');
-	res.send(html);
-	//res.send("DUPA");
-}
-);
+	res.render('dashboard',
+	{
+		title : "SGM Test App",
+		page  : "dashboard"
+	});
+});
 
-var server = app.listen(8081, function()
+app.get('/about', function(req, res)
+{
+	res.render('about',
+	{
+		title: "About application",
+		page : "about"
+	});
+})
+
+var server = app.listen(process.env.PORT, function()
 {
 	console.log("Server started!");
 })

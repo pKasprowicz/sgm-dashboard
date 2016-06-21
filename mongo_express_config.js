@@ -19,12 +19,12 @@ if (process.env.VCAP_SERVICES) {
 } else {
   mongo = {
     db:       'devices',
-    host:     'localhost',
-    password: 'root',
+    host:     '$OPENSHIFT_MONGODB_DB_HOST',
+    password: 'FVPZcPM3ZD37',
     port:     27017,
     ssl:      false,
-    url:      'mongodb://localhost:27017/',
-    username: 'root',
+    url:      'mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/',
+    username: 'admin',
   };
 }
 

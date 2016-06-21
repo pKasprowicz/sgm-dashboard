@@ -14,7 +14,7 @@ app.set('view engine', 'jade')
 
 app.use(express.static(__dirname + '/public'))
 
-mongoose.connect('mongodb://127.0.0.1/devices');
+mongoose.connect('mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/');
 
 var renderDashboard = function(req,res)
 {

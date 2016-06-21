@@ -1,0 +1,12 @@
+extends ../node_modules/jade-bootstrap/_bootstrap
+
+include mixins.jade
+
+append body
+  script(src="https://code.jquery.com/jquery-3.0.0.js")
+  +menubar
+  .row
+    .col-sm-4
+    .col-sm-4
+      h1 Hello!
+    .col-sm-4

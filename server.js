@@ -1,4 +1,11 @@
 var express = require('express');
+var mongoose = require('mongoose');
+var mongo_express = require('mongo-express/lib/middleware');
+var mongo_express_config = require('./mongo_express_config')
+
+var Device = require('./models/device')
+
+
 
 var app = express();
 
@@ -6,6 +13,8 @@ app.set('views', __dirname + '/views')
 app.set('view engine', 'jade')
 
 app.use(express.static(__dirname + '/public'))
+
+mongoose.connect('mongodb://127.0.0.1/devices');
 
 var renderDashboard = function(req,res)
 {
@@ -28,6 +37,22 @@ app.get('/about', function(req, res)
 		page : "about"
 	});
 })
+
+app.get('/test', function(req, res)
+{
+	Device.find({}, function(err, devices)
+	{
+		var ob = [];
+		devices.forEach(function(entry)
+		{
+			ob.push(entry.toObject({getters : false}));
+		});
+		res.render('test', {devList : ob});
+	});
+
+});
+
+app.use('/mongo', mongo_express(mongo_express_config));
 
 var server = app.listen(process.env.PORT, function()
 {

@@ -47,6 +47,8 @@ function updateValue(message)
 {
   var topic = message.destinationName;
 
+  var topicArray = message.payloadBytes;
+
   console.log("Received message topic : ", topic);
   var expression = new RegExp("([a-z0-9])+");
   var matchList = topic.match(/([a-z0-9])+/g);

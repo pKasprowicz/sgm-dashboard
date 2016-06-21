@@ -1,5 +1,4 @@
 var express = require('express');
-var fs = require('fs');
 
 var app = express();
 
@@ -8,14 +7,18 @@ app.set('view engine', 'jade')
 
 app.use(express.static(__dirname + '/public'))
 
-app.get('/dashboard', function(req, res)
+var renderDashboard = function(req,res)
 {
 	res.render('dashboard',
 	{
 		title : "SGM Test App",
 		page  : "dashboard"
 	});
-});
+}
+
+app.get('/', renderDashboard);
+
+app.get('/dashboard', renderDashboard);
 
 app.get('/about', function(req, res)
 {

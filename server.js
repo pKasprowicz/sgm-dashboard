@@ -54,7 +54,7 @@ app.get('/test', function(req, res)
 
 app.use('/mongo', mongo_express(mongo_express_config));
 
-var server = app.listen(process.env.PORT, function()
+var server = app.listen(8080, function()
 {
 	console.log("Server started!");
 })

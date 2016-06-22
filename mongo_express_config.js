@@ -23,7 +23,9 @@ if (process.env.VCAP_SERVICES) {
     password: process.env.OPENSHIFT_MONGODB_DB_PASSWORD,
     port:     process.env.OPENSHIFT_MONGODB_DB_PORT,
     ssl:      false,
-    url:      process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/' + process.env.OPENSHIFT_APP_NAME,
+    url:      process.env.OPENSHIFT_MONGODB_DB_HOST
+              + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT
+              + '/' + process.env.OPENSHIFT_APP_NAME,
     username: 'admin',
   };
 }

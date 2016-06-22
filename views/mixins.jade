@@ -38,7 +38,7 @@ mixin live_table
                   th Value
               tbody
                 each measurement in device.measurements
-                  tr(id="#{measurement.place}")
+                  tr(class="#{measurement.place}")
                     td #{measurement.place}
                     td #{measurement.quantity}
                     td(id="#{measurement.quantity}") 0

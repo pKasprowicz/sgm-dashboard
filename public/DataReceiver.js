@@ -55,7 +55,7 @@ function updateValue(message)
 
   var objectId = '.' + matchList[0] + "." + matchList[1] + " #" +matchList[2] + "." + matchList[3];
 
-  console.log("Filling with message element : " objectId);
+  console.log("Filling with message element : ", objectId);
 
   $(document.getElementById(objectId)).text(message.payloadString);
 }

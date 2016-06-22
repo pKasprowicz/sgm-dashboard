@@ -47,8 +47,6 @@ function updateValue(message)
 {
   var topic = message.destinationName;
 
-  var topicArray = message.payloadBytes;
-
   console.log("Received message topic : ", topic);
   var expression = new RegExp("([a-z0-9])+");
   var matchList = topic.match(/([a-z0-9])+/g);
@@ -57,7 +55,49 @@ function updateValue(message)
 
   console.log("Filling with message element : ", objectId);
 
-  $(objectId).text(message.payloadString);
+  var textToSend = parsePacket(message.payloadBytes);
+
+  $(objectId).text(textToSend);
+}
+
+function parsePacket(packet)
+{
+  var formattedValue =  (packetToUint32(packet, 0) / packetToUint16(packet, 4)).toFixed(2);
+  var unitCode = packetToUint32(packet, 6);
+
+  switch(unitCode)
+  {
+    case 0:
+    formattedValue += ' hPa';
+    break;
+
+    case 1:
+    formattedValue += ' Celsius';
+    break;
+
+    case 2:
+    formattedValue += ' %';
+    break;
+  }
+
+  return formattedValue;
+
+}
+
+function packetToUint32(packet, offset)
+{
+  var value = packet[offset];
+  value += (packet[offset + 1] << 8);
+  value += (packet[offset + 2] << 16);
+  value += (packet[offset + 3] << 24);
+  return value;
+}
+
+function packetToUint16(packet, offset)
+{
+  var value = packet[offset];
+  value += (packet[offset + 1] << 8);
+  return value;
 }
 
 function onConnect()

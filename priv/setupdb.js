@@ -11,6 +11,8 @@ if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   process.env.OPENSHIFT_APP_NAME;
 }
 
+console.log('Connecting to ', mongoDbUrl);
+
 mongoose.connect(mongoDbUrl);
 
 var db = mongoose.connection;
@@ -33,7 +35,12 @@ new Device({
       quantity : "humid"
     }
 	]
-}).save();
+}).save(function(err, product, numAffected){
+  if(err)
+  {
+    console.log("Could not save object");
+  }
+});
 
 new Device({
 	id : "DEV2",
@@ -52,4 +59,9 @@ new Device({
       quantity : "humid"
     }
 	]
-}).save();
+}).save(function(err, product, numAffected){
+  if(err)
+  {
+    console.log("Could not save object");
+  }
+});

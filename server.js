@@ -54,7 +54,10 @@ app.get('/test', function(req, res)
 
 app.use('/mongo', mongo_express(mongo_express_config));
 
-var server = app.listen(8080, function()
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+
+var server = app.listen(server_port, server_ip_address, function()
 {
 	console.log("Server started!");
 })

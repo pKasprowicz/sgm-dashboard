@@ -1,0 +1,28 @@
+{
+  "name": "sgm-admin",
+  "version": "0.1.0",
+  "description": "Admin portal for SGMeteo system",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "jade": "^1.11.0",
+    "mongo-express": "^0.30.59",
+    "mongoose": "^4.5.1",
+    "jade-bootstrap": "^1.0.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@bitbucket.org/spydersky/sgmdashboard.git"
+  },
+  "keywords": [
+    "SGMeteo"
+  ],
+  "author": "Piotr Kasprowicz",
+  "license": "GPL-3.0",
+  "homepage": "https://bitbucket.org/spydersky/sgmdashboard#readme"
+}

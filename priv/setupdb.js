@@ -27,7 +27,7 @@ new Device({
     {
       place : "air",
       quantity : "press"
-    }
+    },
     {
       place : "air",
       quantity : "humid"
@@ -46,7 +46,7 @@ new Device({
     {
       place : "air",
       quantity : "press"
-    }
+    },
     {
       place : "air",
       quantity : "humid"

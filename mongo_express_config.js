@@ -19,13 +19,13 @@ if (process.env.VCAP_SERVICES) {
 } else {
   mongo = {
     db:       'dashboard',
-    host:     process.env.OPENSHIFT_MONGODB_DB_HOST,
-    password: process.env.OPENSHIFT_MONGODB_DB_PASSWORD,
-    port:     process.env.OPENSHIFT_MONGODB_DB_PORT,
+    host:     'ds025603.mlab.com',
+    password: '***REMOVED***',
+    port:     '25603',
     ssl:      false,
-    url:      process.env.OPENSHIFT_MONGODB_DB_HOST
-              + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT
-              + '/' + process.env.OPENSHIFT_APP_NAME,
+    url:      this.host
+              + ':' + this.port
+              + '/' + 'dashboard',
     username: 'admin',
   };
 }

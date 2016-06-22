@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Device = require('../models/device')
 
-var mongoDbUrl = '127.0.0.1:27017/devices';
+var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
 
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   mongoDbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +

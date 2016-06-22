@@ -42,7 +42,7 @@ var renderDashboard = function(req,res)
 			page  : "dashboard"
 		});
 	});
-}
+};
 
 app.get('/', renderDashboard);
 
@@ -55,7 +55,7 @@ app.get('/about', function(req, res)
 		title: "About application",
 		page : "about"
 	});
-})
+});
 
 app.get('/test', function(req, res)
 {
@@ -73,8 +73,8 @@ app.get('/test', function(req, res)
 
 app.use('/mongo', mongo_express(mongo_express_config));
 
-var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
+var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 var server = app.listen(server_port, server_ip_address, function()
 {

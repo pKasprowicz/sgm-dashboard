@@ -20,7 +20,7 @@ if (process.env.VCAP_SERVICES) {
   mongo = {
     db:       'dashboard',
     host:     process.env.OPENSHIFT_MONGODB_DB_HOST,
-    password: '7UEKSZisnJT6',
+    password: process.env.OPENSHIFT_MONGODB_DB_PASSWORD,
     port:     process.env.OPENSHIFT_MONGODB_DB_PORT,
     ssl:      false,
     url:      process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/' + process.env.OPENSHIFT_APP_NAME,

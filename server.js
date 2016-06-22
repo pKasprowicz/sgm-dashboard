@@ -28,10 +28,19 @@ mongoose.connect(mongoDbUrl);
 
 var renderDashboard = function(req,res)
 {
-	res.render('dashboard',
+	Device.find({}, function(err, devices)
 	{
-		title : "SGM Test App",
-		page  : "dashboard"
+		var ob = [];
+		devices.forEach(function(entry)
+		{
+			ob.push(entry.toObject({getters : false}));
+		});
+		res.render('dashboard',
+		{
+			devList : ob,
+			title : "SGM Test App",
+			page  : "dashboard"
+		});
 	});
 }
 

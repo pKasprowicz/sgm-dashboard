@@ -16,29 +16,4 @@ append body
       button(type="button", class="btn btn-danger" id="connectButton") Disconnected
     .col-sm-4
 
-  .row(id="measurements")
-    .col-sm-4
-    .col-sm-4
-      div(class="panel panel-primary")
-        .panel-heading Process data
-        .panel-body
-          table(class="table table-hover")
-            thead
-              tr
-                th Device Id
-                th Measurement
-                th Value
-            tbody
-              tr
-                td DEV1
-                td Temperature
-                td(id="air.temp")
-              tr
-                td DEV1
-                td Pressure
-                td(id="air.press")
-              tr
-                td DEV1
-                td Humidity
-                td(id="air.humid")
-    .col-sm-4
+  +live_table

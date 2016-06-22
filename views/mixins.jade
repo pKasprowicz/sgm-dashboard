@@ -19,3 +19,27 @@ mixin menubar
           a(href="/dashboard") Dashboard
     .col-sm-4
     .row
+
+mixin live_table
+
+  .row(id="measurements")
+    .col-sm-4
+    .col-sm-4
+      each device in devList
+        div(class="panel panel-primary")
+          .panel-heading Device #{device.id}
+          .panel-body
+            table(class="table table-hover")
+              caption Location: #{device.loc}
+              thead
+                tr
+                  th Measurement target
+                  th Sensor
+                  th Value
+              tbody
+                each measurement in device.measurements
+                  tr(id="#{measurement.place}")
+                    td #{measurement.place}
+                    td #{measurement.quantity}
+                    td(id="#{measurement.quantity}") 0
+    .col-sm-4

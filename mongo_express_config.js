@@ -19,11 +19,11 @@ if (process.env.VCAP_SERVICES) {
 } else {
   mongo = {
     db:       'dashboard',
-    host:     '$OPENSHIFT_MONGODB_DB_HOST',
+    host:     process.env.OPENSHIFT_MONGODB_DB_HOST,
     password: '7UEKSZisnJT6',
-    port:     27017,
+    port:     process.env.OPENSHIFT_MONGODB_DB_PORT,
     ssl:      false,
-    url:      'mongodb://$OPENSHIFT_MONGODB_DB_HOST:$OPENSHIFT_MONGODB_DB_PORT/',
+    url:      process.env.OPENSHIFT_MONGODB_DB_HOST + ':' + process.env.OPENSHIFT_MONGODB_DB_PORT + '/' + process.env.OPENSHIFT_APP_NAME,
     username: 'admin',
   };
 }

@@ -53,7 +53,7 @@ function updateValue(message)
   var expression = new RegExp("([a-z0-9])+");
   var matchList = topic.match(/([a-z0-9])+/g);
 
-  var objectId = '.' + matchList[0] + "." + matchList[1] + " #" +matchList[2] + "." + matchList[3];
+  var objectId = "." + matchList[1] + " #" +matchList[2] + "." + matchList[3];
 
   console.log("Filling with message element : ", objectId);
 

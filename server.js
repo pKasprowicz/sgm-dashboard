@@ -1,7 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
-//var mongo_express_config = require('./mongo_express_config')
+var mongo_express_config = require('./mongo_express_config')
 
 var Device = require('./models/device')
 
@@ -15,7 +15,7 @@ app.set('view engine', 'jade')
 app.use(express.static(__dirname + '/public'))
 
 var mongoDbUrl = '127.0.0.1:27017/devices';
-// if OPENSHIFT env variables are present, use the available connection info:
+
 if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
   mongoDbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
   process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
@@ -62,7 +62,7 @@ app.get('/test', function(req, res)
 
 });
 
-//app.use('/mongo', mongo_express(mongo_express_config));
+app.use('/mongo', mongo_express(mongo_express_config));
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'

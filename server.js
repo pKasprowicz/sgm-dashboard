@@ -1,7 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
-var mongo_express_config = require('./mongo_express_config')
+//var mongo_express_config = require('./mongo_express_config')
 
 var Device = require('./models/device')
 
@@ -52,12 +52,12 @@ app.get('/test', function(req, res)
 
 });
 
-app.use('/mongo', mongo_express(mongo_express_config));
+//app.use('/mongo', mongo_express(mongo_express_config));
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
 
 var server = app.listen(server_port, server_ip_address, function()
 {
-	console.log("Server started!");
+	console.log("Server started on address ", server_ip_address, " on port ", server_ip_address);
 })

@@ -58,6 +58,17 @@ function updateValue(message)
   var textToSend = parsePacket(message.payloadBytes);
 
   $(objectId).text(textToSend);
+  var count = parseInt( $(objectId + 'Count').text(), 10);
+  count = count + 1;
+  $(objectId + 'Count').text(count);
+
+  if(message.payloadBytes.length >= 14)
+  {
+    var rawDate = packetToUint32(message.payloadBytes, 10);
+    var date = new Date(rawDate * 1000);
+    $('#timestamp').text(date);
+  }
+
 }
 
 function parsePacket(packet)

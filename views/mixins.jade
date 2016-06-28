@@ -36,10 +36,16 @@ mixin live_table
                   th Measurement target
                   th Sensor
                   th Value
+                  th MsgCount
               tbody
                 each measurement in device.measurements
                   tr(class="#{measurement.place}")
                     td #{measurement.place}
                     td #{measurement.quantity}
                     td(id="#{measurement.quantity}") 0
+                    td(id="#{measurement.quantity}Count") 0
+      div(class="well well-sm")
+        |Last update : 
+        span(id="timestamp")
+          | n/a
     .col-sm-4

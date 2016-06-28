@@ -31,7 +31,7 @@ function onConnectButtonClick()
   $(this).data("clicks", clicks);
 }
 
-var client = new Paho.MQTT.Client("ws://iot.eclipse.org/ws", "sgmClient");
+var client = new Paho.MQTT.Client("ws://iot.eclipse.org/ws", "");
 
 function connectToServer()
 {

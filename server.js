@@ -1,18 +1,18 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
-var mongo_express_config = require('./mongo_express_config')
+var mongo_express_config = require('./server/scripts/mongo_express_config')
 
-var Device = require('./models/device')
+var Device = require('./server/models/device')
 
 
 
 var app = express();
 
-app.set('views', __dirname + '/views')
+app.set('views', __dirname + '/server/views')
 app.set('view engine', 'jade')
 
-app.use(express.static(__dirname + '/public'))
+app.use(express.static(__dirname + '/client/js'))
 
 var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
 

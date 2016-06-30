@@ -1,25 +1,3 @@
-mixin menubar
-
-  script.
-    $(document).ready(
-      function()
-      {
-
-        $("#menu ##{page}").addClass("active");
-      }
-    );
-
-  .row(id="menubar")
-    .col-sm-4
-    .col-sm-4
-      ul(class="nav nav-tabs" id="menu")
-        li(role="presentation" id="about")
-          a(href="/about") About
-        li(role="presentation" id="dashboard")
-          a(href="/dashboard") Dashboard
-    .col-sm-4
-    .row
-
 mixin live_table
 
   .row(id="measurements")

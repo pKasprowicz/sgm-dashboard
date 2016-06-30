@@ -12,7 +12,8 @@ var app = express();
 app.set('views', __dirname + '/server/views')
 app.set('view engine', 'jade')
 
-app.use(express.static(__dirname + '/client/js'))
+app.use(express.static(__dirname + '/client/js'));
+app.use(express.static(__dirname + '/client/controllers'));
 
 var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
 
@@ -66,7 +67,11 @@ app.get('/test', function(req, res)
 		{
 			ob.push(entry.toObject({getters : false}));
 		});
-		res.render('test', {devList : ob});
+		res.render('test',
+    {
+      devList : ob,
+      page : "test"
+    });
 	});
 
 });
@@ -78,5 +83,5 @@ var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 var server = app.listen(server_port, server_ip_address, function()
 {
-	console.log("Server started on address ", server_ip_address, " on port ", server_ip_address);
+	console.log("Server started on address ", server_ip_address, " on port ", server_port);
 })

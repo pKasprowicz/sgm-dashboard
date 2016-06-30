@@ -1,0 +1,28 @@
+extends ../../node_modules/jade-bootstrap/_bootstrap
+
+append scripts
+  script(src="mqttws31.js")
+  script(src="DataReceiver.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js")
+  script(src="liveboard-controller.js")
+  script.
+    $(document).ready(
+      function()
+      {
+
+        $("#menu ##{page}").addClass("active");
+      }
+    );
+
+append body
+  .row(id="menubar")
+    .col-sm-4
+    .col-sm-4
+      ul(class="nav nav-tabs" id="menu")
+        li(role="presentation" id="about")
+          a(href="/about") About
+        li(role="presentation" id="dashboard")
+          a(href="/dashboard") Dashboard
+        li(role="presentation" id="test")
+          a(href="/test") Sandbox
+    .col-sm-4

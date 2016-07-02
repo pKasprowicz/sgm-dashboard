@@ -1,5 +1,5 @@
-angular.module('Liveboard',[])
-  .controller('LiveboardController', function($scope)
+angular.module('Liveboard', [])
+  .controller('LiveboardController',function($scope, $http)
   {
 
       var updateData = function(topic, message)
@@ -18,49 +18,19 @@ angular.module('Liveboard',[])
         testUpdate("5.6");
       }
 
-      $scope.devList =
-      [
-        { id : "dev1",
-          loc : "Villa Hubertus",
-          measurements : [
-            { place : "air",
-              quantity : "temp",
-              value : 7,
-              msgCount : 0
-            },
-            { place : "air",
-              quantity : "press",
-              value : "n/a",
-              msgCount : 0
-            },
-            { place : "air",
-              quantity : "humid",
-              value : "n/a",
-              msgCount : 0
-            }
-          ]
-        },
+      // Get the model's data
+      $http.get('/deviceList')
+        .then(function(result)
+        {
+            $scope.devList = result.data;
+            $scope.devList.forEach(function(device)
+            {
+              device.measurements.forEach(function(measurement)
+              {
+                  measurement.msgCount = 0;
+                  measurement.value = 'n/a';
+              })
+            });
+        });
 
-        { id : "dev2",
-          loc : "Plac treningowy",
-          measurements : [
-            { place : "air",
-              quantity : "temp",
-              value : "n/a",
-              msgCount : 0
-            },
-            { place : "air",
-              quantity : "press",
-              value : "n/a",
-              msgCount : 0
-            },
-            { place : "air",
-              quantity : "humid",
-              value : "n/a",
-              msgCount : 0
-            }
-          ]
-        }
-
-      ];
-  })
+  });

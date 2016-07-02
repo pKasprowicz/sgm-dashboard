@@ -3,8 +3,7 @@ extends ../../node_modules/jade-bootstrap/_bootstrap
 append scripts
   script(src="mqttws31.js")
   script(src="DataReceiver.js")
-  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js")
-  script(src="liveboard-controller.js")
+  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
   script.
     $(document).ready(
       function()
@@ -15,6 +14,8 @@ append scripts
     );
 
 append body
+  .page-header
+    h1 SGMeteo Control Panel
   .row(id="menubar")
     .col-sm-4
     .col-sm-4

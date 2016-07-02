@@ -3,9 +3,24 @@ var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
 var mongo_express_config = require('./server/scripts/mongo_express_config')
 
-var Device = require('./server/models/device')
+var mqtt_broker = require('./server/scripts/mqtt_broker');
 
+var Device = require('./server/models/device');
 
+mqtt_broker.serverSettings.port = 1883;
+
+mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
+{
+  console.log("Message published!");
+  console.log(packet);
+}
+
+mqtt_broker.callbacks.onClientSubscribedCallback = function(topic, client)
+{
+  console.log("Subscribed to ", topic);
+}
+
+mqtt_broker.launchBroker();
 
 var app = express();
 

@@ -1,27 +1,35 @@
+//Initializing server
 var express = require('express');
 var app = express();
 var server = require('http').Server(app);
-
 app.use(express.static(__dirname + '/client/js'));
 app.use(express.static(__dirname + '/client/controllers'));
 
-var io = require('socket.io')(server);
-
-var mqtt_broker = require('./server/scripts/mqtt_broker');
-var Device = require('./server/models/device');
-
+//Setting routes for express server
 require('./routes.js')(app)
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
+//Socket io initialization
+var io = require('socket.io')(server);
+
+//MQTT broker initialization
+var mqtt_broker = require('./server/scripts/mqtt_broker');
+var mqtt_process = require('./mqtt_processing');
 
 mqtt_broker.serverSettings.port = 1883;
+
+io.on('connection', function(socket){
+  console.log('User connected to socket');
+});
 
 mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
 {
   console.log("Message published!");
-  io.emit('val change', { for: 'everyone', packet });
+  message = mqtt_process.processIncomingMessage(packet);
+  if (!message)
+  {
+    return;
+  }
+  io.emit('val change', { for: 'everyone', message });
   console.log(packet);
 }
 
@@ -31,6 +39,8 @@ mqtt_broker.callbacks.onClientSubscribedCallback = function(topic, client)
 }
 
 mqtt_broker.launchBroker();
+
+//Starting the web server
 
 var server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 var server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';

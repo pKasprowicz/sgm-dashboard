@@ -1,8 +1,20 @@
-angular.module('Liveboard',[])
-  .service('mqtt', function()
-  {
-    this.run = function(updateCallback)
+liveBoardApp.factory('LiveData', function()
     {
-      updateCallback(5);  
-    }
-  })
+
+      var DataProvider = function(){
+          this.socket = io();
+
+          var self = this;
+          this.processValChangeCallback = function(){};
+
+          this.socket.on('val change', function(msg)
+          {
+            console.log('Value changed');
+            console.log(msg);
+            self.processValChangeCallback(msg);
+          });
+      }
+
+      return DataProvider;
+
+    });

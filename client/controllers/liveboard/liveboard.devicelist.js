@@ -1,10 +1,21 @@
-angular.module('Liveboard', [])
-  .controller('LiveboardController',function($scope, $http)
+liveBoardApp.controller('LiveboardController',function($scope, $http, LiveData)
   {
 
-      var updateData = function(topic, message)
+      var updateData = function(incomingObject)
       {
-
+          var message = incomingObject.message;
+        $scope.devList.some(function(device){
+            if (device.id == message.devId)
+            {
+                return device.measurements.some(function(measurement){
+                    if ((measurement.place == message.target) && (measurement.quantity == message.quantity)){
+                        measurement.value = message.value;
+                        return true;
+                    }
+                });
+            }
+        });
+          $scope.$apply();
       }
 
       var testUpdate = function(val)
@@ -32,5 +43,8 @@ angular.module('Liveboard', [])
               })
             });
         });
+
+      var liveDataProvider = new LiveData();
+      liveDataProvider.processValChangeCallback = updateData;
 
   });

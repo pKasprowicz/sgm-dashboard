@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
 var mongo_express_config = require('./server/scripts/mongo_express_config')
+var Device = require('./server/models/device');
 
 var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
 

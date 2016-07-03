@@ -10,23 +10,14 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, LiveData)
                 return device.measurements.some(function(measurement){
                     if ((measurement.place == message.target) && (measurement.quantity == message.quantity)){
                         measurement.value = message.value;
+                        ++measurement.msgCount;
+                        $scope.lastTimestamp = message.timestamp;
                         return true;
                     }
                 });
             }
         });
           $scope.$apply();
-      }
-
-      var testUpdate = function(val)
-      {
-        $scope.devList[0].measurements[0].value = val;
-
-      }
-
-      $scope.clicker = function()
-      {
-        testUpdate("5.6");
       }
 
       // Get the model's data
@@ -43,6 +34,8 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, LiveData)
               })
             });
         });
+
+      $scope.lastTimestamp = "n/a";
 
       var liveDataProvider = new LiveData();
       liveDataProvider.processValChangeCallback = updateData;

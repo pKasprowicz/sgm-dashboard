@@ -60,6 +60,9 @@ var processIncomingMessage = function(packet)
     retObj.quantity = matchList[3];
     retObj.value = parsePacket(payload);
 
+    var rawDate = packetToUint32(payload, 10);
+    retObj.timestamp = new Date(rawDate * 1000).toString();
+
     return retObj;
 }
 

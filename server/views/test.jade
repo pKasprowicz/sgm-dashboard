@@ -4,11 +4,7 @@ include mixins.jade
 
 append body
   div(ng-app="Liveboard" ng-controller="LiveboardController")
-    .row(id="control" )
-      .col-sm-4
-      .col-sm-4
-        button(type="button", class="btn btn-danger" ng-click="clicker()") Disconnected
-      .col-sm-4
+
     .row(id="measurements")
       .col-sm-4
       .col-sm-4
@@ -33,7 +29,7 @@ append body
         div(class="well well-sm")
           |Last update : 
           span(id="timestamp")
-            | n/a
+            | {{lastTimestamp}}
       .col-sm-4
 
 append scripts

@@ -15,16 +15,15 @@ append scripts
     );
 
 append body
-  .page-header
-    h1 SGMeteo Control Panel
-  .row(id="menubar")
-    .col-sm-4
-    .col-sm-4
-      ul(class="nav nav-tabs" id="menu")
-        li(role="presentation" id="about")
+  nav(class="navbar navbar-inverse")
+    .container-fluid
+      .navbar-header
+        .navbar-brand
+          |SGMeteo Live Dashboard
+      ul(class="nav navbar-nav" id="menu")
+        li(id="about")
           a(href="/about") About
-        li(role="presentation" id="dashboard")
+        li(id="dashboard")
           a(href="/dashboard") Dashboard
-        li(role="presentation" id="test")
+        li(id="test")
           a(href="/test") Sandbox
-    .col-sm-4

@@ -17,7 +17,7 @@ var mqtt_process = require('./mqtt_processing');
 
 mqtt_broker.serverSettings.port = 1883;
 
-io.on('connection', function(socket){
+io.on('conection', function(socket){
   console.log('User connected to socket');
 });
 

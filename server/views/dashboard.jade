@@ -1,13 +1,36 @@
 extends main.jade
 
-include mixins.jade
-
 append body
+  div(ng-app="Liveboard" ng-controller="LiveboardController")
+    br
+    .row(id="measurements")
+      .col-sm-4
+      .col-sm-4
+        div(class="panel panel-primary" ng-repeat="device in devList")
+          .panel-heading Device {{device.id}}
+          .panel-body
+            table(class="table table-hover")
+              caption Location: {{device.loc}}
+              thead
+                tr
+                  th Measurement target
+                  th Sensor
+                  th Value
+                  th MsgCount
+              tbody
+                tr(ng-repeat="measurement in device.measurements")
+                  td {{measurement.place}}
+                  td {{measurement.quantity}}
+                  td(id="{{measurement.quantity}}") {{measurement.value}}
+                  td(id="{{measurement.quantity}}Count") {{measurement.msgCount}}
+                      
+        div(class="well well-sm")
+          |Last update : 
+          span(id="timestamp")
+            | {{lastTimestamp}}
+      .col-sm-4
 
-  .row(id="control")
-    .col-sm-4
-    .col-sm-4
-      button(type="button", class="btn btn-danger" id="connectButton") Disconnected
-    .col-sm-4
-
-  +live_table
+append scripts
+  script(src="liveboard/liveboard.module.js")
+  script(src="liveboard/liveboard.dataprovider.js")
+  script(src="liveboard/liveboard.devicelist.js")

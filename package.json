@@ -10,6 +10,7 @@
     "mongo-express": "^0.30.59",
     "mongoose": "^4.5.1",
     "mosca": "^2.0.1",
+    "mqtt": "^1.12.0",
     "socket.io": "^1.4.8"
   },
   "devDependencies": {},

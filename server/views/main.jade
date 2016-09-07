@@ -1,10 +1,10 @@
 extends ../../node_modules/jade-bootstrap/_bootstrap
 
 append scripts
-  script(src="mqttws31.js")
-  script(src="DataReceiver.js")
+  script(src="/sgmeteo/mqttws31.js")
+  script(src="/sgmeteo/DataReceiver.js")
   script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
-  script(src="/socket.io/socket.io.js")
+  script(src="/sgmeteo/socket.io/socket.io.js")
   script.
     $(document).ready(
       function()
@@ -22,8 +22,8 @@ append body
           |SGMeteo Live Dashboard
       ul(class="nav navbar-nav" id="menu")
         li(id="about")
-          a(href="/about") About
+          a(href="/sgmeteo/about") About
         li(id="dashboard")
-          a(href="/dashboard") Dashboard
+          a(href="/sgmeteo/dashboard") Dashboard
         li(id="test")
-          a(href="/test") Sandbox
+          a(href="/sgmeteo/test") Sandbox

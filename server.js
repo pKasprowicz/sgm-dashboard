@@ -4,6 +4,8 @@ var app = express();
 var server = require('http').Server(app);
 app.use(express.static(__dirname + '/client/js'));
 app.use(express.static(__dirname + '/client/controllers'));
+app.use(express.static(__dirname + '/client/css'));
+
 
 //Setting routes for express server
 require('./routes.js')(app)
@@ -42,8 +44,8 @@ mqtt_broker.launchBroker();
 
 //Starting the web server
 
-var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var server_ip_address = process.env.IP || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
+var server_port = 8081;
+var server_ip_address = '127.0.0.1';
 
 server.listen(server_port, server_ip_address, function()
 {

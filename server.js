@@ -10,6 +10,8 @@ app.use(express.static(__dirname + '/client/css'));
 //Setting routes for express server
 require('./routes.js')(app)
 
+var measurementsDb = require('./server/db_manager.js');
+
 //Socket io initialization
 var io = require('socket.io')(server);
 
@@ -26,11 +28,12 @@ io.on('conection', function(socket){
 mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
 {
   console.log("Message published!");
-  message = mqtt_process.processIncomingMessage(packet);
+  var message = mqtt_process.processIncomingMessage(packet);
   if (!message)
   {
     return;
   }
+  measurementsDb.storeMeasurement(message);
   io.emit('val change', { for: 'everyone', message });
   console.log(packet);
 }

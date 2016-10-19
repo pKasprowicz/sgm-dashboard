@@ -2,16 +2,11 @@ var mongoose = require('mongoose');
 var mongo_express = require('mongo-express/lib/middleware');
 var mongo_express_config = require('./server/scripts/mongo_express_config')
 var Device = require('./server/models/device');
+var Measurments = require('./server/models/measurement');
+
+var measurementsDb = require('./server/db_manager.js');
 
 var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
-
-if(process.env.OPENSHIFT_MONGODB_DB_PASSWORD){
-  mongoDbUrl = process.env.OPENSHIFT_MONGODB_DB_USERNAME + ":" +
-  process.env.OPENSHIFT_MONGODB_DB_PASSWORD + "@" +
-  process.env.OPENSHIFT_MONGODB_DB_HOST + ':' +
-  process.env.OPENSHIFT_MONGODB_DB_PORT + '/' +
-  process.env.OPENSHIFT_APP_NAME;
-}
 
 module.exports = function(app)
 {
@@ -82,6 +77,19 @@ module.exports = function(app)
       res.end(JSON.stringify(ob));
   	});
   });
+
+  app.get("/history", function(req, res)
+    {
+      measurementsDb.getMeasurementsHistory(true, function(entries)
+      {
+        var ob = [];
+        entries.forEach(function(entry)
+    		{
+    			ob.push(entry.toObject({getters : false}));
+    		});
+        res.end(JSON.stringify(ob));
+      });
+    });
 
   app.use('/mongo', mongo_express(mongo_express_config));
 }

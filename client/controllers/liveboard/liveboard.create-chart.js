@@ -8,16 +8,17 @@ liveBoardApp.factory('ChartGen', function()
         for(var i = 0; i < 4; ++i)
         {
             dates.push(new Date());
-            dates[i].setHours(0);
+            // dates[i].setHours(0);
             dates[i].setMinutes(0);
             dates[i].setSeconds(0);
             dates[i].setMilliseconds(0);
         }
 
-        for (var i=dates.length; i>2; --i)
+        for (var i=dates.length; i>1; --i)
         {
-            dates[i-2].setDate(dates[i-1].getDate() - 1);
+            dates[i-2].setHours(dates[i-1].getHours() - 1);
         }
+        console.log(dates);
         return dates;
     }
 
@@ -29,12 +30,6 @@ liveBoardApp.factory('ChartGen', function()
             console.log("Generating chart!");
 
             var dates = prepareRegions();
-
-            var dateRegions = [
-                {axis : 'x', end : dates[0]},
-                {axis : 'x', start : dates[1], end : dates[2]},
-                {axis : 'x', start : dates[3]}
-            ];
 
             self.chart = c3.generate(
             {
@@ -62,8 +57,9 @@ liveBoardApp.factory('ChartGen', function()
                         type: 'timeseries',
                         tick: {
                             format: '%Y-%m-%d %H:%M',
-                            values: dateRegions
+                            values : dates
                         },
+                        localtime: true,
                         show: true,
                     },
                     y : {
@@ -72,7 +68,7 @@ liveBoardApp.factory('ChartGen', function()
                         show: true,
                         tick: {
                             format: d3.format("4.2f")
-                        }
+                        },
                     },
                     y2: {
                         min: -30,
@@ -80,7 +76,11 @@ liveBoardApp.factory('ChartGen', function()
                         show: true
                     }
                 },
-                regions: dateRegions
+                regions: [
+                    {end : dates[0]},
+                    {start : dates[1], end: dates[2]},
+                    {start: dates[3]}
+                    ]
             });
 
         };
@@ -102,6 +102,8 @@ liveBoardApp.factory('ChartGen', function()
             // {
             //     return;
             // }
+
+            console.log("updating...");
 
             var timestampName = measurement.quantity + '.timestamp';
             self.chart.flow(

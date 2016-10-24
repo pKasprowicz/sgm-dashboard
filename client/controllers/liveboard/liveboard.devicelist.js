@@ -3,6 +3,12 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
 
+      var setTimeZone = function(dateString)
+      {
+        var date = new Date(dateString);
+        return date.toLocaleDateString();
+      }
+
       var updateData = function(incomingObject)
       {
         var message = incomingObject.message;
@@ -15,7 +21,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                   {
                     measurement.value = message.value;
                     ++measurement.msgCount;
-                    $scope.lastTimestamp = message.timestamp;
+                    $scope.lastTimestamp = Date(message.timestamp).toLocaleString();
                     if(device.chart != 'undefined')
                     {
                       device.chart.appendMeasurement(message);
@@ -97,7 +103,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                 }
 
               }, self);
-            $scope.lastTimestamp = result.data[0].timestamp.replace(/(\d\d\d\d)-(\d\d)-(\d\d)(T)(\d\d:\d\d:\d\d)(.\d\d\dZ)/,'$3/$2/$1 $5');
+            $scope.lastTimestamp = Date(result.data[0].timestamp).toLocaleString();
             })});
 
       var liveDataProvider = new LiveData();

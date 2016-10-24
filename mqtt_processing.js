@@ -5,17 +5,17 @@ function parsePacket(packet)
 
     switch(unitCode)
     {
-        case 0:
-            formattedValue += ' hPa';
-            break;
+        // case 0:
+        //     formattedValue += ' hPa';
+        //     break;
 
-        case 1:
-            formattedValue += ' Celsius';
-            break;
+        // case 1:
+        //     formattedValue += ' Celsius';
+        //     break;
 
-        case 2:
-            formattedValue += ' %';
-            break;
+        // case 2:
+        //     formattedValue += ' %';
+        //     break;
     }
 
     return formattedValue;
@@ -61,7 +61,7 @@ var processIncomingMessage = function(packet)
     retObj.value = parsePacket(payload);
 
     var rawDate = packetToUint32(payload, 10);
-    retObj.timestamp = new Date(rawDate * 1000).toString();
+    retObj.timestamp = new Date(rawDate * 1000).toISOString();
 
     return retObj;
 }

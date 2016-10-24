@@ -87,7 +87,7 @@ module.exports = function(app)
     		{
     			ob.push(entry.toObject({getters : false}));
     		});
-        res.end(JSON.stringify(ob));
+        res.end(JSON.stringify(ob,null,2));
       });
     });
 

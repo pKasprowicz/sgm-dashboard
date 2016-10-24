@@ -3,56 +3,79 @@ liveBoardApp.factory('ChartGen', function()
 
     var factory = function(deviceId)
     {
+        var self = this;
         this.generateChart = function()
         {
             console.log("Generating chart!");
-            var chart = c3.generate(
+            //Test section end
+            self.chart = c3.generate(
             {
                 bindto: 'div#'+deviceId+'-chart',
                 data: {
                     columns: [
-                        [],
-                        []
+                        ['press'],
+                        ['temp'],
+                        ['press.timestamp'],
+                        ['temp.timestamp']
                     ],
-                    axes: {
-                        data2: 'y2'
+                    xs: {
+                        press: 'press.timestamp',
+                        temp: 'temp.timestamp'
                     },
-                type : 'spline'
+                    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
+                    type : 'spline',
+                    axes : {
+                        press : 'y',
+                        temp : 'y2'
+                    }
                 },
                 axis : {
-                    y : {
+                    x: {
+                        type: 'timeseries',
                         tick: {
-                            format: d3.format("s")
+                                format: '%Y-%m-%d %H:%M'
+                            }
+                    },
+                    y : {
+                        show: true,
+                        tick: {
+                            format: d3.format("4.2f")
                         }
                     },
                     y2: {
-                        show: true,
-                        tick: {
-                            format: d3.format("$")
-                        }
+                        show: true
                     }
                 }
             });
 
-            setTimeout(function () {
-              chart.load({
-                  columns: [
-                              ['data1', 30, 20, 10, 40, 15, 17],
-                              ['data2', 100, 200, 100, 40, 150, 250]
-                          ]
-              })
-            }, 0);
-
-            setTimeout(function () {
-              chart.flow({
-                  columns: [
-                      ['data1', 111, 114],
-                      ['data2', 300, 154]
-                  ],
-                  length : 0
-              });
-            }, 3000);
         };
+
+        this.appendMeasurement = function(measurement)
+        {
+            if (!self.chart)
+            {
+                console.error('Cannot append data to unexisting chart');
+                return;
+            }
+
+            if((measurement.quantity == 'humid') || (measurement.quantity == 'temp'))
+            {
+                return;
+            }
+
+            console.log(measurement);
+            var timestampName = measurement.quantity + '.timestamp';
+            self.chart.flow(
+                {
+                    columns : [
+                        [measurement.quantity, Number(measurement.value)],
+                        [timestampName, measurement.timestamp]
+                    ],
+                    length: 0
+                }
+            );
+
+        }
     }
 
 

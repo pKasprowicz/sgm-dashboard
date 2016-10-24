@@ -3,18 +3,16 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
 
-      var SGM1Chart = new ChartGen('dev1');
-      var SGM2Chart = new ChartGen('dev2');
-
       $timeout(function() {
-        SGM1Chart.generateChart();
-        SGM2Chart.generateChart();
+        $scope.devList.forEach(function(device) {
+            device.chart.generateChart();
+        })
       }, 1000);
 
       var updateData = function(incomingObject)
       {
         var message = incomingObject.message;
-        return $scope.devList.some(function(device){
+        $scope.devList.some(function(device){
             if (device.id == message.devId)
             {
               return device.measurements.some(function(measurement)
@@ -24,12 +22,16 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                     measurement.value = message.value;
                     ++measurement.msgCount;
                     $scope.lastTimestamp = message.timestamp;
+                    if(device.chart != 'undefined')
+                    {
+                      device.chart.appendMeasurement(message);
+                    }
                     return true;
                   }
                 });
             }
         });
-        // $scope.$apply();
+        $scope.$apply();
       }
 
       var updateDataFromDb = function(entry)
@@ -37,6 +39,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         return $scope.devList.some(function(device){
             if (device.id == entry.devId)
             {
+              device.chart.appendMeasurement(entry);
               return device.measurements.some(function(measurement)
                 {
                   if ((measurement.place == entry.target)
@@ -55,13 +58,11 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         $scope.$apply();
       }
 
-      // Get the model's data
-      $http.get('/sgmeteo/deviceList')
-        .then(function(result)
-        {
-            $scope.devList = result.data;
+      var renderDeviceList = function()
+      {
             $scope.devList.forEach(function(device)
             {
+              device.chart = new ChartGen(device.id);
               device.measurements.forEach(function(measurement)
               {
                   measurement.msgCount = 0;
@@ -69,28 +70,37 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                   ++$scope.totalMeasurementPoints;
               })
             });
-        });
+      }
 
-      //Get recent measurements
-      $http.get('/sgmeteo/history')
+      // Get the model's data
+      $http.get('/sgmeteo/deviceList')
         .then(function(result)
         {
-          var self = this;
-          result.data.some(function(measurement)
-          {
-
-            if (updateDataFromDb(measurement))
+          $scope.devList = result.data;
+          renderDeviceList();
+        }
+        ).then(function()
+        {
+          //Get recent measurements
+          $http.get('/sgmeteo/history')
+            .then(function(result)
             {
-              ++this.filledMeasurments;
-            }
+              var self = this;
+              result.data.some(function(measurement)
+              {
 
-            if(this.filledMeasurments == $scope.totalMeasurementPoints)
-            {
-              return true;
-            }
+                if (updateDataFromDb(measurement))
+                {
+                  ++this.filledMeasurments;
+                }
 
-          }, self);
-        });
+                if(this.filledMeasurments == $scope.totalMeasurementPoints)
+                {
+                  return true;
+                }
+
+              }, self);
+            })});
 
       $scope.lastTimestamp = "n/a";
 

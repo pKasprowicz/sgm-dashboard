@@ -62,5 +62,3 @@ var drawChart = function()
             );
 
         }
-
-drawChart();

@@ -6,12 +6,13 @@ append body
     .row(id="measurements")
       .col-sm-4
       .col-sm-4
-        div(class="device-measurements" ng-repeat="device in devList")
+        -var devIdx=0
+        each device in devList
           div(class="panel panel-primary")
-            .panel-heading Device {{device.id}}
+            .panel-heading Device #{device.id}
             .panel-body
               table(class="table table-hover")
-                caption Location: {{device.loc}}
+                caption Location: #{device.loc}
                 thead
                   tr
                     th Measurement target
@@ -19,12 +20,16 @@ append body
                     th Value
                     th MsgCount
                 tbody
-                  tr(ng-repeat="measurement in device.measurements")
-                    td {{measurement.place}}
-                    td {{measurement.quantity}}
-                    td(id="{{measurement.quantity}}") {{measurement.value}}
-                    td(id="{{measurement.quantity}}Count") {{measurement.msgCount}}
-              div(id="{{device.id}}-chart" width="600" height="400")
+                  -var measIdx=0
+                  each measurement in device.measurements
+                    tr
+                      td #{measurement.place}
+                      td #{measurement.quantity}
+                      td(id="#{measurement.quantity}") {{devList[#{devIdx}].measurements[#{measIdx}].value}}
+                      td(id="#{measurement.quantity}Count") {{measurement.msgCount}}
+                      - ++measIdx
+          - ++devIdx
+          div(id="#{device.id}-chart" width="900" height="600")
         div(class="well well-sm")
           |Last update :
           span(id="timestamp")

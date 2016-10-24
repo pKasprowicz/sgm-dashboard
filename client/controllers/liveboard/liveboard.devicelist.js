@@ -3,12 +3,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
 
-      $timeout(function() {
-        $scope.devList.forEach(function(device) {
-            device.chart.generateChart();
-        })
-      }, 1000);
-
       var updateData = function(incomingObject)
       {
         var message = incomingObject.message;
@@ -34,7 +28,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         $scope.$apply();
       }
 
-      var updateDataFromDb = function(entry)
+      var populateFromDb = function(entry)
       {
         return $scope.devList.some(function(device){
             if (device.id == entry.devId)
@@ -58,11 +52,12 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         $scope.$apply();
       }
 
-      var renderDeviceList = function()
+      var initializeDeviceList = function()
       {
             $scope.devList.forEach(function(device)
             {
               device.chart = new ChartGen(device.id);
+              device.chart.generateChart();
               device.measurements.forEach(function(measurement)
               {
                   measurement.msgCount = 0;
@@ -70,6 +65,8 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                   ++$scope.totalMeasurementPoints;
               })
             });
+
+            $scope.lastTimestamp = "n/a";
       }
 
       // Get the model's data
@@ -77,7 +74,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         .then(function(result)
         {
           $scope.devList = result.data;
-          renderDeviceList();
+          initializeDeviceList();
         }
         ).then(function()
         {
@@ -89,7 +86,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
               result.data.some(function(measurement)
               {
 
-                if (updateDataFromDb(measurement))
+                if (populateFromDb(measurement))
                 {
                   ++this.filledMeasurments;
                 }
@@ -100,9 +97,8 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                 }
 
               }, self);
+            $scope.lastTimestamp = result.data[0].timestamp.replace(/(\d\d\d\d)-(\d\d)-(\d\d)(T)(\d\d:\d\d:\d\d)(.\d\d\dZ)/,'$3/$2/$1 $5');
             })});
-
-      $scope.lastTimestamp = "n/a";
 
       var liveDataProvider = new LiveData();
       liveDataProvider.processValChangeCallback = updateData;

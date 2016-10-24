@@ -1,13 +1,41 @@
 liveBoardApp.factory('ChartGen', function()
 {
 
+    var prepareRegions = function()
+    {
+        var dates = [];
+
+        for(var i = 0; i < 4; ++i)
+        {
+            dates.push(new Date());
+            dates[i].setHours(0);
+            dates[i].setMinutes(0);
+            dates[i].setSeconds(0);
+            dates[i].setMilliseconds(0);
+        }
+
+        for (var i=dates.length; i>2; --i)
+        {
+            dates[i-2].setDate(dates[i-1].getDate() - 1);
+        }
+        return dates;
+    }
+
     var factory = function(deviceId)
     {
         var self = this;
         this.generateChart = function()
         {
             console.log("Generating chart!");
-            //Test section end
+
+            var dates = prepareRegions();
+
+            var dateRegions = [
+                {axis : 'x', end : dates[0]},
+                {axis : 'x', start : dates[1], end : dates[2]},
+                {axis : 'x', start : dates[3]}
+            ];
+
             self.chart = c3.generate(
             {
                 bindto: 'div#'+deviceId+'-chart',
@@ -23,7 +51,7 @@ liveBoardApp.factory('ChartGen', function()
                         temp: 'temp.timestamp'
                     },
                     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'spline',
+                    type : 'line',
                     axes : {
                         press : 'y',
                         temp : 'y2'
@@ -33,19 +61,26 @@ liveBoardApp.factory('ChartGen', function()
                     x: {
                         type: 'timeseries',
                         tick: {
-                                format: '%Y-%m-%d %H:%M'
-                            }
+                            format: '%Y-%m-%d %H:%M',
+                            values: dateRegions
+                        },
+                        show: true,
                     },
                     y : {
+                        min : 960,
+                        max : 1140,
                         show: true,
                         tick: {
                             format: d3.format("4.2f")
                         }
                     },
                     y2: {
+                        min: -30,
+                        max: 40,
                         show: true
                     }
-                }
+                },
+                regions: dateRegions
             });
 
         };
@@ -58,12 +93,16 @@ liveBoardApp.factory('ChartGen', function()
                 return;
             }
 
-            if((measurement.quantity == 'humid') || (measurement.quantity == 'temp'))
+            if(measurement.quantity == 'humid')
             {
                 return;
             }
 
-            console.log(measurement);
+            // if(measurement.quantity == 'temp')
+            // {
+            //     return;
+            // }
+
             var timestampName = measurement.quantity + '.timestamp';
             self.chart.flow(
                 {

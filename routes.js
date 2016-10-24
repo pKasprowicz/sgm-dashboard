@@ -80,7 +80,20 @@ module.exports = function(app)
 
   app.get("/history", function(req, res)
     {
-      measurementsDb.getMeasurementsHistory(true, function(entries)
+      measurementsDb.getMeasurementsHistory(function(entries)
+      {
+        var ob = [];
+        entries.forEach(function(entry)
+    		{
+    			ob.push(entry.toObject({getters : false}));
+    		});
+        res.end(JSON.stringify(ob,null,2));
+      });
+    });
+
+  app.get("/recent", function(req, res)
+    {
+      measurementsDb.getRecentMeasurements(function(entries)
       {
         var ob = [];
         entries.forEach(function(entry)

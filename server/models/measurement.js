@@ -15,5 +15,6 @@ var measurementSchema = new Schema(
   );
 
 var MeasurementEntry = mongoose.model('measurement', measurementSchema);
+var LastMeasurementEntry = mongoose.model('recentMeasurement', measurementSchema);
 
-module.exports = MeasurementEntry;
+module.exports = { MeasurementEntry, LastMeasurementEntry};

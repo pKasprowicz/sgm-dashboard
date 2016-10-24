@@ -9,9 +9,8 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         return date.toLocaleDateString();
       }
 
-      var updateData = function(incomingObject)
+      var updateLiveData = function(message, noChartUpdate)
       {
-        var message = incomingObject.message;
         $scope.devList.some(function(device){
             if (device.id == message.devId)
             {
@@ -22,7 +21,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                     measurement.value = message.value;
                     ++measurement.msgCount;
                     $scope.lastTimestamp = Date(message.timestamp).toLocaleString();
-                    if(device.chart != 'undefined')
+                    if((device.chart != 'undefined') && (noChartUpdate != 'undefined'))
                     {
                       device.chart.appendMeasurement(message);
                     }
@@ -31,30 +30,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                 });
             }
         });
-        $scope.$apply();
-      }
-
-      var populateFromDb = function(entry)
-      {
-        return $scope.devList.some(function(device){
-            if (device.id == entry.devId)
-            {
-              device.chart.appendMeasurement(entry);
-              return device.measurements.some(function(measurement)
-                {
-                  if ((measurement.place == entry.target)
-                      && (measurement.quantity == entry.quantity)
-                      && (measurement.msgCount == 0))
-                  {
-                    (measurement.msgCount == 0)
-                    measurement.value = entry.value;
-                    ++measurement.msgCount;
-                    return true;
-                  }
-                });
-            }
-        });
-        $scope.$apply();
+        // $scope.$apply();
       }
 
       var initializeDeviceList = function()
@@ -76,38 +52,34 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       // Get the model's data
       $http.get('/sgmeteo/deviceList')
-        .then(function(result)
-        {
+        .then(function(result) {
           $scope.devList = result.data;
           initializeDeviceList();
-        }
-        ).then(function()
-        {
-          //Get recent measurements
-          var filledMeasurments = 0;
-          $http.get('/sgmeteo/history')
-            .then(function(result)
-            {
-              result.data.some(function(measurement)
+        })
+        .then(
+        $http.get('/sgmeteo/recent')
+        .then(function(recent){
+          recent.data.forEach(function(measurement){
+            updateLiveData(measurement, true);
+          });
+          $scope.lastTimestamp = Date(recent.data[0].timestamp).toLocaleString();
+        })
+        )
+        .then(
+        $http.get('/sgmeteo/history')
+        .then(function(history){
+          history.data.forEach(function(measurement){
+            $scope.devList.some(function(device){
+              if(device.id == measurement.devId)
               {
-
-                if (populateFromDb(measurement))
-                {
-                  ++filledMeasurments;
-                }
-
-                if(filledMeasurments == $scope.totalMeasurementPoints)
-                {
-                  return true;
-                }
-
-              },filledMeasurments);
-            
-            $scope.lastTimestamp = Date(result.data[0].timestamp).toLocaleString();
-            })});
+                device.chart.appendMeasurement(measurement);
+              }
+            })})
+          })
+        );
 
       var liveDataProvider = new LiveData();
-      liveDataProvider.processValChangeCallback = updateData;
+      liveDataProvider.processValChangeCallback = updateLiveData;
 
 
   });

@@ -57,7 +57,7 @@ liveBoardApp.factory('ChartGen', function()
                         type: 'timeseries',
                         tick: {
                             format: '%Y-%m-%d %H:%M',
-                            values : dates
+                            // values : dates
                         },
                         localtime: true,
                         show: true,
@@ -76,14 +76,39 @@ liveBoardApp.factory('ChartGen', function()
                         show: true
                     }
                 },
-                regions: [
-                    {end : dates[0]},
-                    {start : dates[1], end: dates[2]},
-                    {start: dates[3]}
-                    ]
+                // regions: [
+                //     {end : dates[0]},
+                //     {start : dates[1], end: dates[2]},
+                //     {start: dates[3]}
+                //     ]
             });
 
         };
+
+        this.loadData = function(data)
+        {
+            var pressureValues = ['press'];
+            var tempValues = ['temp'];
+
+            var pressureTimestamps = ['press.timestamp'];
+            var tempTimestamps = ['temp.timestamp'];
+
+            pressureValues.concat(data.press_y);
+            tempValues.concat(data.temp_y);
+            pressureTimestamps.concat(data.press_x);
+            tempTimestamps.concat(data.temp_x);
+
+            self.chart.load(
+                {
+                    columns : [
+                        pressureValues,
+                        tempValues,
+                        pressureTimestamps,
+                        tempTimestamps
+                        ]
+                }
+                );
+        }
 
         this.appendMeasurement = function(measurement)
         {

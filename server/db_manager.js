@@ -1,9 +1,6 @@
 var mongoose = require('mongoose');
 var Measurements = require('./models/measurement');
 
- var dateFilter = new Date();
- dateFilter.setDate(dateFilter.getDate() - 7);
-
 var storeMeasurement = function(measurement)
 {
 
@@ -27,7 +24,11 @@ var storeMeasurement = function(measurement)
 
 var getMeasurementsHistory = function(doSerialization, resultCallback)
 {
- var historyQuery = Measurements.find({timestamp : {$gt : dateFilter}}).sort({timestamp : 'descending'});
+ var dateFilter = new Date();
+
+ dateFilter.setDate(dateFilter.getDate() - 3);
+
+ var historyQuery = Measurements.find( {"timestamp" : { "$gte" : dateFilter} } ).sort({timestamp : 'descending'});
  historyQuery.exec(function(err, entries)
  {
     resultCallback(entries);

@@ -49,7 +49,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                     (measurement.msgCount == 0)
                     measurement.value = entry.value;
                     ++measurement.msgCount;
-                    // $scope.lastTimestamp = entry.timestamp;
                     return true;
                   }
                 });
@@ -85,24 +84,25 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         ).then(function()
         {
           //Get recent measurements
+          var filledMeasurments = 0;
           $http.get('/sgmeteo/history')
             .then(function(result)
             {
-              var self = this;
               result.data.some(function(measurement)
               {
 
                 if (populateFromDb(measurement))
                 {
-                  ++this.filledMeasurments;
+                  ++filledMeasurments;
                 }
 
-                if(this.filledMeasurments == $scope.totalMeasurementPoints)
+                if(filledMeasurments == $scope.totalMeasurementPoints)
                 {
                   return true;
                 }
 
-              }, self);
+              },filledMeasurments);
+            
             $scope.lastTimestamp = Date(result.data[0].timestamp).toLocaleString();
             })});
 

@@ -28,7 +28,7 @@ append body
                       td #{measurement.place}
                       td #{measurement.quantity}
                       td(id="#{measurement.quantity}") {{devList[#{devIdx}].measurements[#{measIdx}].value}}
-                      td(id="#{measurement.quantity}Count") {{measurement.msgCount}}
+                      td(id="#{measurement.quantity}Count") {{devList[#{devIdx}].measurements[#{measIdx}].msgCount}}
                       - ++measIdx
           - ++devIdx
       .col-sm-4

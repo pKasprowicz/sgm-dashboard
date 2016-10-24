@@ -61,7 +61,7 @@ var processIncomingMessage = function(packet)
     retObj.value = parsePacket(payload);
 
     var rawDate = packetToUint32(payload, 10);
-    retObj.timestamp = new Date(rawDate * 1000).toISOString();
+    retObj.timestamp = new Date(rawDate * 1000);
 
     return retObj;
 }

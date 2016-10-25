@@ -5,46 +5,40 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var populateMeasurementTable = function(message, liveUpdateCallback)
       {
-        $scope.devList.some(function(device){
-            if (device.id == message.devId)
-            {
-              return device.measurements.some(function(measurement)
-                {
-                  if ((measurement.place == message.target) && (measurement.quantity == message.quantity))
-                  {
-                    measurement.value = message.value;
-                    ++measurement.msgCount;
+        $scope.devSpecList[message.devId][message.target][message.quantity].value = message.value;
+        $scope.devSpecList[message.devId][message.target][message.quantity].msgCount += 1;
 
-                    if (typeof(liveUpdateCallback) == 'function')
-                    {
-                      liveUpdateCallback(device, measurement);
-                    }
+        if (typeof(liveUpdateCallback) == 'function')
+        {
+          liveUpdateCallback(message);
+        }
 
-                    return true;
-                  }
-                });
-            }
-        });
       }
 
-      var updateChartAndTimestamp = function(device, measurement)
+      var updateChartAndTimestamp = function(measurement)
       {
-        device.chart.appendMeasurement(measurement);
+        $scope.devChartList[measurement.deviceId].appendMeasurement(measurement);
         $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
       }
 
-      var initializeDeviceList = function()
+      var initializeDeviceList = function(rawDeviceList)
       {
-            $scope.devList.forEach(function(device)
-            {
-              device.chart = new ChartGen(device.id);
-              device.chart.generateChart();
-              device.measurements.forEach(function(measurement)
-              {
-                  measurement.msgCount = 0;
-                  measurement.value = 'n/a';
-                  ++$scope.totalMeasurementPoints;
-              })
+            $scope.devSpecList = [];
+            $scope.devChartList = [];
+
+            rawDeviceList.forEach(function(device){
+              $scope.devSpecList[device.id] = [];
+              $scope.devChartList[device.id] = new ChartGen(device.id);
+              $scope.devChartList[device.id].generateChart();
+
+              device.measurements.forEach(function(measurementSpec){
+                if (!(measurementSpec.place in $scope.devSpecList[device.id]))
+                {
+                  $scope.devSpecList[device.id][measurementSpec.place] = [];
+                }
+                $scope.devSpecList[device.id][measurementSpec.place][measurementSpec.quantity] = {value : 'n/a', msgCount : 0};
+
+              });
             });
 
             $scope.lastTimestamp = "n/a";
@@ -53,8 +47,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
       // Get the model's data
       $http.get('/sgmeteo/deviceList')
         .then(function(result) {
-          $scope.devList = result.data;
-          initializeDeviceList();
+          initializeDeviceList(result.data);
         })
         .then(
         $http.get('/sgmeteo/recent')
@@ -69,14 +62,10 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         $http.get('/sgmeteo/history')
         .then(function(history){
           history.data.forEach(function(measurement){
-            $scope.devList.some(function(device){
-              if(device.id == measurement.devId)
-              {
-                device.chart.appendMeasurement(measurement);
-              }
-            })})
+            $scope.devChartList[measurement.devId].appendMeasurement(measurement);
           })
-        );
+        })
+      );
 
       var liveDataProvider = new LiveData();
       liveDataProvider.processValChangeCallback = function(measurement){

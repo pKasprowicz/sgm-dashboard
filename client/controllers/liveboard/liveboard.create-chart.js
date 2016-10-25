@@ -8,7 +8,7 @@ liveBoardApp.factory('ChartGen', function()
         for(var i = 0; i < 4; ++i)
         {
             dates.push(new Date());
-            // dates[i].setHours(0);
+            dates[i].setHours(0);
             dates[i].setMinutes(0);
             dates[i].setSeconds(0);
             dates[i].setMilliseconds(0);
@@ -16,9 +16,8 @@ liveBoardApp.factory('ChartGen', function()
 
         for (var i=dates.length; i>1; --i)
         {
-            dates[i-2].setHours(dates[i-1].getHours() - 1);
+            dates[i-2].setDate(dates[i-1].getDate() - 1);
         }
-        console.log(dates);
         return dates;
     }
 
@@ -46,7 +45,7 @@ liveBoardApp.factory('ChartGen', function()
                         temp: 'temp.timestamp'
                     },
                     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'line',
+                    type : 'spline',
                     axes : {
                         press : 'y',
                         temp : 'y2'

@@ -3,12 +3,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
 
-      var setTimeZone = function(dateString)
-      {
-        var date = new Date(dateString);
-        return date.toLocaleDateString();
-      }
-
       var updateLiveData = function(message, noChartUpdate)
       {
         $scope.devList.some(function(device){
@@ -62,7 +56,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
           recent.data.forEach(function(measurement){
             updateLiveData(measurement, true);
           });
-          $scope.lastTimestamp = Date(recent.data[0].timestamp).toLocaleString();
+          $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toLocaleString();
         })
         )
         .then(

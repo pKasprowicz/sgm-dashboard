@@ -3,7 +3,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
 
-      var updateLiveData = function(message, noChartUpdate)
+      var populateMeasurementTable = function(message, liveUpdateCallback)
       {
         $scope.devList.some(function(device){
             if (device.id == message.devId)
@@ -14,17 +14,23 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                   {
                     measurement.value = message.value;
                     ++measurement.msgCount;
-                    $scope.lastTimestamp = Date(message.timestamp).toLocaleString();
-                    if((device.chart != 'undefined') && (noChartUpdate != 'undefined'))
+
+                    if (typeof(liveUpdateCallback) == 'function')
                     {
-                      device.chart.appendMeasurement(message);
+                      liveUpdateCallback(device, measurement);
                     }
+
                     return true;
                   }
                 });
             }
         });
-        // $scope.$apply();
+      }
+
+      var updateChartAndTimestamp = function(device, measurement)
+      {
+        device.chart.appendMeasurement(measurement);
+        $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
       }
 
       var initializeDeviceList = function()
@@ -54,7 +60,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         $http.get('/sgmeteo/recent')
         .then(function(recent){
           recent.data.forEach(function(measurement){
-            updateLiveData(measurement, true);
+            populateMeasurementTable(measurement);
           });
           $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toLocaleString();
         })
@@ -73,7 +79,9 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         );
 
       var liveDataProvider = new LiveData();
-      liveDataProvider.processValChangeCallback = updateLiveData;
+      liveDataProvider.processValChangeCallback = function(measurement){
+        populateMeasurementTable(measurement, updateChartAndTimestamp);
+      }
 
 
   });

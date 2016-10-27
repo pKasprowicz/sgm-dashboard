@@ -1,8 +1,9 @@
-liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, LiveData, ChartGen)
+liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, LiveData, TempPressChart, HumidChart)
   {
 
       $scope.totalMeasurementPoints = 0;
-
+      var devChartList = [];
+      var devHumidChartList = [];
       var populateMeasurementTable = function(message, liveUpdateCallback)
       {
         $scope.devSpecList[message.devId][message.target][message.quantity].value = message.value;
@@ -17,19 +18,21 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var updateChartAndTimestamp = function(measurement)
       {
-        $scope.devChartList[measurement.deviceId].appendMeasurement(measurement);
+        devChartList[measurement.deviceId].appendMeasurement(measurement);
         $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
       }
 
       var initializeDeviceList = function(rawDeviceList)
       {
             $scope.devSpecList = [];
-            $scope.devChartList = [];
 
             rawDeviceList.forEach(function(device){
               $scope.devSpecList[device.id] = [];
-              $scope.devChartList[device.id] = new ChartGen(device.id);
-              $scope.devChartList[device.id].generateChart();
+              devChartList[device.id] = new TempPressChart(device.id);
+              devChartList[device.id].generateChart();
+
+              devHumidChartList[device.id] = new HumidChart(device.id);
+              devHumidChartList[device.id].generateChart();
 
               device.measurements.forEach(function(measurementSpec){
                 if (!(measurementSpec.place in $scope.devSpecList[device.id]))
@@ -44,28 +47,57 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             $scope.lastTimestamp = "n/a";
       }
 
-      // Get the model's data
-      $http.get('/sgmeteo/deviceList')
-        .then(function(result) {
-          initializeDeviceList(result.data);
+      var constructHistoryData = function(history)
+      {
+        var historyDataX = [];
+        var historyDataY = [];
+        var historyDataX2 = [];
+        var historyDataY2 = [];
+        var historyDataX3 = [];
+        var historyDataY3 = [];
+        history.forEach(function(measurement){
+          if ((measurement.target=='air') && (measurement.quantity=='press'))
+          {
+            historyDataX.push(measurement.timestamp);
+            historyDataY.push(measurement.value);
+          }
+          if ((measurement.target=='air') && (measurement.quantity=='temp'))
+          {
+            historyDataX2.push(measurement.timestamp);
+            historyDataY2.push(measurement.value);
+          }
+          if ((measurement.target=='air') && (measurement.quantity=='humid'))
+          {
+            historyDataX3.push(measurement.timestamp);
+            historyDataY3.push(measurement.value);
+          }
         })
-        .then(
+        devChartList['dev1'].preloadData(historyDataX, historyDataY, historyDataX2, historyDataY2);
+        devHumidChartList['dev1'].preloadData(historyDataX3, historyDataY3);
+      }
+
+      var fetchmeasurementData = function()
+      {
         $http.get('/sgmeteo/recent')
         .then(function(recent){
           recent.data.forEach(function(measurement){
             populateMeasurementTable(measurement);
           });
           $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toLocaleString();
-        })
-        )
-        .then(
+        });
+
         $http.get('/sgmeteo/history')
         .then(function(history){
-          history.data.forEach(function(measurement){
-            $scope.devChartList[measurement.devId].appendMeasurement(measurement);
-          })
-        })
-      );
+          constructHistoryData(history.data);
+          });
+      }
+
+      // Get the model's data
+      $http.get('/sgmeteo/deviceList')
+        .then(function(result) {
+          initializeDeviceList(result.data);
+          fetchmeasurementData();
+        });
 
       var liveDataProvider = new LiveData();
       liveDataProvider.processValChangeCallback = function(measurement){

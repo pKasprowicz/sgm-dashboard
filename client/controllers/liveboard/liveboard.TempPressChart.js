@@ -40,26 +40,26 @@ liveBoardApp.factory('TempPressChart', function()
                 bindto: 'div#'+deviceId+'-chart-temppress',
                 data: {
                     xs : {
-                      pressure : 't1',
-                      temperature : 't2'
+                      press : 'press.t',
+                      temp : 'temp.t'
                     },
                       axes : {
-                        pressure: 'y',
-                        temperature: 'y2'
+                        press: 'y',
+                        temp: 'y2'
                       },
                     columns : [
-                        ['pressure'],
-                        ['t1'],
-                        ['temperature'],
-                        ['t2']
+                        ['press'],
+                        ['press.t'],
+                        ['temp'],
+                        ['temp.t']
                     ],
                     names : {
-                        pressure : "Pressure [hPa]",
-                        temperature : "Temperature [\u2103]"
+                        press : "Pressure [hPa]",
+                        temp : "Temperature [\u2103]"
                     },
                     colors : {
-                      pressure : 'green',
-                      temperature : 'red'
+                      press : 'green',
+                      temp : 'red'
                     },
                     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
                     type : 'spline',
@@ -93,6 +93,9 @@ liveBoardApp.factory('TempPressChart', function()
                         },
                     },
                 },
+                zoom : {
+                    enabled : true
+                }
                 // regions: [
                 //     {end : dates[0]},
                 //     {start : dates[1], end: dates[2]},
@@ -110,22 +113,12 @@ liveBoardApp.factory('TempPressChart', function()
                 return;
             }
 
-            if(measurement.quantity == 'humid')
-            {
-                return;
-            }
-
-            if(measurement.quantity == 'temp')
-            {
-                return;
-            }
-
-            var timestampName = measurement.quantity + '.timestamp';
+            var timestampName = measurement.quantity + '.t';
             self.chart.flow(
                 {
                     columns : [
-                        ['y', Number(measurement.value)],
-                        ['x', measurement.timestamp]
+                        [measurement.target, Number(measurement.value)],
+                        [timestampName,      measurement.timestamp]
                     ],
                     length : 0
                 }
@@ -135,10 +128,10 @@ liveBoardApp.factory('TempPressChart', function()
 
         this.preloadData = function(dataX, dataY, dataX2, dataY2)
         {
-            var y = ['pressure'];
-            var x = ['t1'];
-            var y2 = ['temperature'];
-            var x2 = ['t2'];
+            var y = ['press'];
+            var x = ['press.t'];
+            var y2 = ['temp'];
+            var x2 = ['temp.t'];
             y = y.concat(dataY);
             x = x.concat(dataX);
             y2 = y2.concat(dataY2);

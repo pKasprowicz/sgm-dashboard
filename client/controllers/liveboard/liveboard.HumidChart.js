@@ -99,22 +99,12 @@ liveBoardApp.factory('HumidChart', function()
                 return;
             }
 
-            if(measurement.quantity == 'humid')
-            {
-                return;
-            }
-
-            if(measurement.quantity == 'temp')
-            {
-                return;
-            }
-
             var timestampName = measurement.quantity + '.timestamp';
             self.chart.flow(
                 {
                     columns : [
-                        ['y', Number(measurement.value)],
-                        ['x', measurement.timestamp]
+                        ['humidity', Number(measurement.value)],
+                        ['t1', measurement.timestamp]
                     ],
                     length : 0
                 }

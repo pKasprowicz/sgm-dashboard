@@ -18,7 +18,17 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var updateChartAndTimestamp = function(measurement)
       {
-        devChartList[measurement.deviceId].appendMeasurement(measurement);
+        if ((measurement.quantity == 'press') ||
+            (measurement.quantity == 'temp'))
+        {
+          devChartList[measurement.deviceId].appendMeasurement(measurement);
+        }
+
+
+        if (measurement.quantity == 'humid')
+        {
+          devHumidChartList[measurement.deviceId].appendMeasurement(measurement);
+        }
         $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
       }
 

@@ -3,7 +3,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
       var devChartList = [];
-      var devHumidChartList = [];
       var populateMeasurementTable = function(message, liveUpdateCallback)
       {
         $scope.devSpecList[message.devId][message.target][message.quantity].value = message.value;
@@ -18,17 +17,13 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var updateChartAndTimestamp = function(measurement)
       {
-        if ((measurement.quantity == 'press') ||
-            (measurement.quantity == 'temp'))
-        {
-          devChartList[measurement.deviceId].appendMeasurement(measurement);
-        }
-
-
-        if (measurement.quantity == 'humid')
-        {
-          devHumidChartList[measurement.deviceId].appendMeasurement(measurement);
-        }
+        devChartList[measurement.devId].some(function(chartDescriptor){
+          if (chartDescriptor.values.includes(measurement.quantity))
+          {
+            chartDescriptor.chart.appendMeasurement(measurement);
+            return true;
+          }
+        });
         $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
       }
 
@@ -38,11 +33,23 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
             rawDeviceList.forEach(function(device){
               $scope.devSpecList[device.id] = [];
-              devChartList[device.id] = new TempPressChart(device.id);
-              devChartList[device.id].generateChart();
+              devChartList[device.id] = [];
 
-              devHumidChartList[device.id] = new HumidChart(device.id);
-              devHumidChartList[device.id].generateChart();
+              var tempPressDescriptor = {
+                chart : new TempPressChart(device.id),
+                values : ['temp', 'press'],
+              }
+
+              var humidDescriptor = {
+                chart : new HumidChart(device.id),
+                values : ['humid'],
+              }
+
+              tempPressDescriptor.chart.generateChart();
+              humidDescriptor.chart.generateChart();
+
+              devChartList[device.id].push(tempPressDescriptor);
+              devChartList[device.id].push(humidDescriptor);
 
               device.measurements.forEach(function(measurementSpec){
                 if (!(measurementSpec.place in $scope.devSpecList[device.id]))
@@ -59,31 +66,30 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var constructHistoryData = function(history)
       {
-        var historyDataX = [];
-        var historyDataY = [];
-        var historyDataX2 = [];
-        var historyDataY2 = [];
-        var historyDataX3 = [];
-        var historyDataY3 = [];
-        history.forEach(function(measurement){
-          if ((measurement.target=='air') && (measurement.quantity=='press'))
-          {
-            historyDataX.push(measurement.timestamp);
-            historyDataY.push(measurement.value);
-          }
-          if ((measurement.target=='air') && (measurement.quantity=='temp'))
-          {
-            historyDataX2.push(measurement.timestamp);
-            historyDataY2.push(measurement.value);
-          }
-          if ((measurement.target=='air') && (measurement.quantity=='humid'))
-          {
-            historyDataX3.push(measurement.timestamp);
-            historyDataY3.push(measurement.value);
-          }
-        })
-        devChartList['dev1'].preloadData(historyDataX, historyDataY, historyDataX2, historyDataY2);
-        devHumidChartList['dev1'].preloadData(historyDataX3, historyDataY3);
+        for (var deviceId in devChartList)
+        {
+          devChartList[deviceId].forEach(function(chartDescriptor){
+            chartDescriptor.values.forEach(function(dataSet){
+              $http.post('/sgmeteo/history', {devId : deviceId, target : 'air', quantity : dataSet})
+              .then(function(result){
+                parseHistoryData(chartDescriptor, dataSet, result.data);
+              })
+            });
+          });
+        }
+
+      }
+
+      var parseHistoryData = function(chartDescriptor, key, queryResult)
+      {
+        var xData = [];
+        var yData = [];
+
+        queryResult.forEach(function(entry){
+          xData.push(entry.timestamp);
+          yData.push(entry.value);
+        });
+        chartDescriptor.chart.preloadData(xData, yData,key);
       }
 
       var fetchmeasurementData = function()
@@ -96,10 +102,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
           $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toLocaleString();
         });
 
-        $http.get('/sgmeteo/history')
-        .then(function(history){
-          constructHistoryData(history.data);
-          });
       }
 
       // Get the model's data
@@ -107,12 +109,13 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         .then(function(result) {
           initializeDeviceList(result.data);
           fetchmeasurementData();
+          constructHistoryData();
         });
 
       var liveDataProvider = new LiveData();
       liveDataProvider.processValChangeCallback = function(measurement){
         populateMeasurementTable(measurement, updateChartAndTimestamp);
+        $scope.$apply();
       }
-
 
   });

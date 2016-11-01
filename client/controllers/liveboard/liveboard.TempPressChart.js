@@ -18,7 +18,6 @@ liveBoardApp.factory('TempPressChart', function()
         {
             dates[i-2].setDate(dates[i-1].getDate() - 1);
         }
-        console.log(dates);
         return dates;
     }
 
@@ -35,7 +34,7 @@ liveBoardApp.factory('TempPressChart', function()
                     height: 180,
                 },
                 title : {
-                    text : 'Temperature and pressure in time'
+                    text : 'Temperature and pressure over time'
                     },
                 bindto: 'div#'+deviceId+'-chart-temppress',
                 data: {
@@ -117,7 +116,7 @@ liveBoardApp.factory('TempPressChart', function()
             self.chart.flow(
                 {
                     columns : [
-                        [measurement.target, Number(measurement.value)],
+                        [measurement.quantity, Number(measurement.value)],
                         [timestampName,      measurement.timestamp]
                     ],
                     length : 0
@@ -126,23 +125,17 @@ liveBoardApp.factory('TempPressChart', function()
 
         };
 
-        this.preloadData = function(dataX, dataY, dataX2, dataY2)
+        this.preloadData = function(dataX, dataY, key)
         {
-            var y = ['press'];
-            var x = ['press.t'];
-            var y2 = ['temp'];
-            var x2 = ['temp.t'];
+            var y = [key];
+            var x = [key+'.t'];
             y = y.concat(dataY);
             x = x.concat(dataX);
-            y2 = y2.concat(dataY2);
-            x2 = x2.concat(dataX2);
             self.chart.load(
                 {
                     columns : [
                         x,
                         y,
-                        x2,
-                        y2
                     ]
                 }
             );

@@ -80,6 +80,7 @@ module.exports = function(app)
 
   app.get("/history", function(req, res)
     {
+      console.log('GET query to historical data');
       measurementsDb.getMeasurementsHistory(function(entries)
       {
         var ob = [];
@@ -89,6 +90,20 @@ module.exports = function(app)
     		});
         res.end(JSON.stringify(ob,null,2));
       });
+    });
+
+  app.post("/history", function(req, res)
+    {
+      console.log('POST query to historical data');
+      measurementsDb.getMeasurementsHistory(function(entries)
+      {
+        var ob = [];
+        entries.forEach(function(entry)
+    		{
+    			ob.push(entry.toObject({getters : false}));
+    		});
+        res.end(JSON.stringify(ob,null,2));
+      }, req.body);
     });
 
   app.get("/recent", function(req, res)

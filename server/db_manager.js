@@ -20,6 +20,22 @@ var storeMeasurement = function(measurement)
         }
     });
 
+    updateRecentMeasurement(measurement);
+
+}
+
+var updateRecentMeasurement = function(measurement)
+{
+    var queryParams = {
+    };
+
+    queryParams.devId = measurement.devId;
+    queryParams.quantity = measurement.quantity;
+    queryParams.target = measurement.target;
+
+    Measurements.LastMeasurementEntry.find( queryParams ).remove().exec();
+    
+    
     new Measurements.LastMeasurementEntry(
     {
         timestamp : measurement.timestamp,
@@ -35,16 +51,30 @@ var storeMeasurement = function(measurement)
             console.log("Could not save object");
         }
     });
-
 }
 
-var getMeasurementsHistory = function(resultCallback)
+var getMeasurementsHistory = function(resultCallback, queryParameters)
 {
  var dateFilter = new Date();
 
- dateFilter.setDate(dateFilter.getDate() - 3);
+ dateFilter.setDate(dateFilter.getDate() - 2);
 
- var historyQuery = Measurements.MeasurementEntry.find( {"timestamp" : { "$gte" : dateFilter} } ).sort({timestamp : 'descending'});
+var dateQuery = {"timestamp" : { "$gte" : dateFilter} };
+
+var historyQuery = {};
+
+if ('undefined' != queryParameters)
+{
+    var queryParams = Object.assign(dateQuery, queryParameters)
+    historyQuery = Measurements.MeasurementEntry.find( queryParams ).sort({timestamp : 'descending'});
+}
+else
+{
+     historyQuery = Measurements.MeasurementEntry.find( dateQuery ).sort({timestamp : 'descending'});
+}
+
+console.log(queryParams);
+
  historyQuery.exec(function(err, entries)
  {
     resultCallback(entries);

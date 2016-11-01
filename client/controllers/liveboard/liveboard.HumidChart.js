@@ -18,7 +18,6 @@ liveBoardApp.factory('HumidChart', function()
         {
             dates[i-2].setDate(dates[i-1].getDate() - 1);
         }
-        console.log(dates);
         return dates;
     }
 
@@ -32,7 +31,7 @@ liveBoardApp.factory('HumidChart', function()
             self.chart = c3.generate(
             {
                 title : {
-                    text : 'Air Humidity in time'
+                    text : 'Air Humidity over time'
                     },
                 size : {
                     height: 180,
@@ -82,6 +81,9 @@ liveBoardApp.factory('HumidChart', function()
                         },
                     },
                 },
+                zoom : {
+                    enabled : true
+                }
                 // regions: [
                 //     {end : dates[0]},
                 //     {start : dates[1], end: dates[2]},
@@ -112,7 +114,7 @@ liveBoardApp.factory('HumidChart', function()
 
         };
 
-        this.preloadData = function(dataX, dataY)
+        this.preloadData = function(dataX, dataY, key)
         {
             var y = ['humidity'];
             var x = ['t1'];

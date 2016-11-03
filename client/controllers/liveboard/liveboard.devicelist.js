@@ -39,7 +39,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             rawDeviceList.forEach(function(device){
               $scope.devSpecList[device.id] = {status : device.status, measurements : []};
               devChartList[device.id] = [];
-              
+
               if (device.status == 'disabled')
               {
                 return;
@@ -114,7 +114,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             populateMeasurementTable(measurement);
           });
           $scope.tablesLoaded = 1;
-          $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toLocaleString();
+          $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toString();
         });
 
       }

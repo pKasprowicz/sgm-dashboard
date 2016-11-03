@@ -8,10 +8,6 @@
     border:0;
 }
 
-#measurements .panel-heading.test{
-    background : green;
-}
-
 #measurements .panel-body.disabled{
     visibility : hidden;
     max-height:0px;

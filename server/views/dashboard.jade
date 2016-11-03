@@ -4,34 +4,38 @@ append body
   div(ng-app="Liveboard" ng-controller="LiveboardController")
     br
     .row(id="measurements")
-      .col-sm-2
-      .col-sm-8
+      .col-sm-3
+      .col-sm-6
         each device in devList
-          div(class="panel panel-primary")
-            .panel-heading Device #{device.id}
-            .panel-body
-              table(class="table table-hover")
+          div(class="panel panel-primary #{device.status}")
+            div(class="panel-heading #{device.status}") Device #{device.id}
+            div(class="panel-body #{device.status}")
+              table(class="table table-hover invisible" ng-class='{"invisible": !tablesLoaded}')
                 caption Location: #{device.loc}
                 thead
                   tr
-                    th Measurement target
-                    th Sensor
+                    th Measurement
                     th Value
                     th MsgCount
                 tbody
                   each measurement in device.measurements
                     tr
-                      td #{measurement.place}
-                      td #{measurement.quantity}
-                      td(id="#{measurement.quantity}") {{devSpecList['#{device.id}']['#{measurement.place}']['#{measurement.quantity}'].value}}
-                      td(id="#{measurement.quantity}Count") {{devSpecList['#{device.id}']['#{measurement.place}']['#{measurement.quantity}'].msgCount}}
-          div(id="#{device.id}-chart-temppress" width="900" height="300")
-          div(id="#{device.id}-chart-humid" width="900" height="300")
-        div(class="well well-sm")
-          |Last update :
-          span(id="timestamp")
-            | {{lastTimestamp}}
-      .col-sm-2
+                      td #{measurement.description}
+                      td(id="#{measurement.quantity}") {{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].value}}
+                      td(id="#{measurement.quantity}Count") {{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].msgCount}}
+              div(id="#{device.id}-chart-temppress" width="900" height="300")
+                svg(height="250")
+              div(id="#{device.id}-chart-humid" width="900" height="300")
+                  svg(height="250")
+              div(class="well well-sm")
+                |Last update :
+                span(id="timestamp")
+                  | {{lastTimestamp}}
+      .col-sm-3
+
+append styles
+  link(rel="stylesheet",href="dashboard.css")
+  link(rel="stylesheet",href="c3.min.css")
 
 append scripts
   script(src="liveboard/liveboard.module.js")
@@ -41,4 +45,3 @@ append scripts
   script(src="liveboard/liveboard.HumidChart.js")
   script(src="https://d3js.org/d3.v3.min.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js")
-  link(href="c3.min.css"  rel="stylesheet" type="text/css")

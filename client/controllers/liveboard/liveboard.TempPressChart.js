@@ -31,7 +31,7 @@ liveBoardApp.factory('TempPressChart', function()
             self.chart = c3.generate(
             {
                 size : {
-                    height: 180,
+                    height: 250,
                 },
                 title : {
                     text : 'Temperature and pressure over time'
@@ -61,7 +61,7 @@ liveBoardApp.factory('TempPressChart', function()
                       temp : 'red'
                     },
                     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'spline',
+                    type : 'line',
                 },
                 axis : {
                     x: {

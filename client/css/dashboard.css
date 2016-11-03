@@ -1,0 +1,23 @@
+#measurements .panel.disabled{
+    border:0;
+}
+
+#measurements .panel-heading.disabled{
+    background : gray;
+    text-decoration:line-through;
+    border:0;
+}
+
+#measurements .panel-heading.test{
+    background : green;
+}
+
+#measurements .panel-body.disabled{
+    visibility : hidden;
+    max-height:0px;
+    height:0px;
+}
+
+#measurements .panel-body.table.disabled{
+    visibility : hidden;
+}

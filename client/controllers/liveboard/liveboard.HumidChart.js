@@ -34,7 +34,7 @@ liveBoardApp.factory('HumidChart', function()
                     text : 'Air Humidity over time'
                     },
                 size : {
-                    height: 180,
+                    height: 250,
                 },
                 bindto: 'div#'+deviceId+'-chart-humid',
                 data: {
@@ -50,7 +50,7 @@ liveBoardApp.factory('HumidChart', function()
                         humidity : "blue"
                     },
                     xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'spline',
+                    type : 'line',
                 },
                 axis : {
                     x: {

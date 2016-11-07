@@ -29,7 +29,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             return true;
           }
         });
-        $scope.lastTimestamp = Date(measurement.timestamp).toLocaleString();
+        $scope.lastTimestamp = moment(measurement.timestamp).format('MM/DD/YYYY HH:mm');
       }
 
       var initializeDeviceList = function(rawDeviceList)
@@ -96,14 +96,12 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var parseHistoryData = function(chartDescriptor, key, queryResult)
       {
-        var xData = [];
-        var yData = [];
+        var dataSet = [];
 
         queryResult.forEach(function(entry){
-          xData.push(entry.timestamp);
-          yData.push(entry.value);
+          dataSet.push({x : entry.timestamp, y : entry.value });
         });
-        chartDescriptor.chart.preloadData(xData, yData,key);
+        chartDescriptor.chart.preloadData(dataSet, key);
       }
 
       var fetchmeasurementData = function()
@@ -114,7 +112,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             populateMeasurementTable(measurement);
           });
           $scope.tablesLoaded = 1;
-          $scope.lastTimestamp = (new Date(recent.data[0].timestamp)).toString();
+          $scope.lastTimestamp = moment(recent.data[0].timestamp).format('MM/DD/YYYY HH:mm')
         });
 
       }

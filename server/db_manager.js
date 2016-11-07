@@ -57,7 +57,7 @@ var getMeasurementsHistory = function(resultCallback, queryParameters)
 {
  var dateFilter = new Date();
 
- dateFilter.setDate(dateFilter.getDate() - 2);
+ dateFilter.setDate(dateFilter.getDate() - 5);
 
 var dateQuery = {"timestamp" : { "$gte" : dateFilter} };
 

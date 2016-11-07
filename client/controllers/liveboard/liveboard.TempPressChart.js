@@ -1,144 +1,119 @@
+/*global moment*/
+/*global liveBoardApp*/
+/*global Chart*/
 liveBoardApp.factory('TempPressChart', function()
 {
 
-    var prepareRegions = function()
-    {
-        var dates = [];
-
-        for(var i = 0; i < 4; ++i)
-        {
-            dates.push(new Date());
-            dates[i].setHours(0);
-            dates[i].setMinutes(0);
-            dates[i].setSeconds(0);
-            dates[i].setMilliseconds(0);
-        }
-
-        for (var i=dates.length; i>1; --i)
-        {
-            dates[i-2].setDate(dates[i-1].getDate() - 1);
-        }
-        return dates;
-    }
-
     var factory = function(deviceId)
     {
-        var self = this;
+        var keyDataSetMap = [];
+        keyDataSetMap['press'] = 0;
+        keyDataSetMap['temp'] = 1;
+
+        this.chartCanvas = document.getElementById(deviceId + '-chart-temppress').getContext('2d');
+        this.timeFormat = 'MM/DD/YYYY HH:mm';
+
+        this.chartOptions = {
+            tooltips : {
+                mode : 'x-axis',
+                titleFontFamily : 'monospace',
+                bodyFontFamily : 'monospace',
+            },
+            scales: {
+                xAxes: [
+                    {
+        				type: "time",
+        				time: {
+        					format: this.timeFormat,
+        				},
+        				scaleLabel: {
+        					display: true,
+        				}
+			        }
+    			],
+    			yAxes: [
+                    {
+                        id: 'press',
+                        type: 'linear',
+                        position: 'left',
+                        scalePositionLeft: true,
+                        ticks : {
+                            min : 960,
+                            max : 1140,
+                            fontColor : "rgba(114, 159, 44, 1)",
+                        },
+                    },
+                    {
+                        id: 'temp',
+                        type: 'linear',
+                        position: 'right',
+                        scalePositionLeft: false,
+                        ticks : {
+                            min: -30,
+                            max: 40,
+                            fontColor : "rgba(215,40,40,1)",
+                        },
+                    },
+                ],
+            }
+        };
+
+        this.chartData = {
+            datasets : [
+                {
+                    data : [],
+                    label : 'Pressure [hPa]',
+                    backgroundColor: "rgba(114, 159, 44, 0.4)",
+                    borderColor: "rgba(114, 159, 44, 1)",
+                    borderCapStyle: 'butt',
+                    yAxisID : 'press',
+                    fill : true,
+                },
+                {
+                    data : [],
+                    label : 'Temperature [\u2103]',
+                    backgroundColor: "rgba(215,40,40,0.4)",
+                    borderColor: "rgba(215,40,40,1)",
+                    borderCapStyle: 'butt',
+                    yAxisID : 'temp',
+                    fill : true
+                },
+            ]
+        }
+
         this.generateChart = function()
         {
-            var dates = prepareRegions();
-
-            self.chart = c3.generate(
-            {
-                size : {
-                    height: 250,
-                },
-                title : {
-                    text : 'Temperature and pressure over time'
-                    },
-                bindto: 'div#'+deviceId+'-chart-temppress',
-                data: {
-                    xs : {
-                      press : 'press.t',
-                      temp : 'temp.t'
-                    },
-                      axes : {
-                        press: 'y',
-                        temp: 'y2'
-                      },
-                    columns : [
-                        ['press'],
-                        ['press.t'],
-                        ['temp'],
-                        ['temp.t']
-                    ],
-                    names : {
-                        press : "Pressure [hPa]",
-                        temp : "Temperature [\u2103]"
-                    },
-                    colors : {
-                      press : 'green',
-                      temp : 'red'
-                    },
-                    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'line',
-                },
-                axis : {
-                    x: {
-                        type: 'timeseries',
-                        tick: {
-                            format: '%Y-%m-%d %H:%M',
-                            count : 5
-                            // values : dates
-                        },
-                        show: true,
-                    },
-                    y : {
-                        min : 960,
-                        max : 1060,
-                        show: true,
-                        tick: {
-                            format: d3.format("4.2f"),
-                            values : [960, 1000, 1060]
-                        },
-                    },
-                    y2 : {
-                        min : -40,
-                        max : 40,
-                        show: true,
-                        tick: {
-                            format: d3.format("4.2f"),
-                            values : [-40, -20, 0, 20, 40]
-                        },
-                    },
-                },
-                zoom : {
-                    enabled : true
-                }
-                // regions: [
-                //     {end : dates[0]},
-                //     {start : dates[1], end: dates[2]},
-                //     {start: dates[3]}
-                //     ]
+            this.chart = new Chart(this.chartCanvas, {
+                type: 'line',
+                data: this.chartData,
+                options : this.chartOptions,
             });
 
         };
 
         this.appendMeasurement = function(measurement)
         {
-            if (!self.chart)
+            if (!this.chart)
             {
                 console.error('Cannot append data to unexisting chart');
                 return;
             }
 
-            var timestampName = measurement.quantity + '.t';
-            self.chart.flow(
-                {
-                    columns : [
-                        [measurement.quantity, Number(measurement.value)],
-                        [timestampName,      measurement.timestamp]
-                    ],
-                    length : 0
-                }
-            );
+            this.chartData.datasets[keyDataSetMap[measurement.quantity]].data.push({
+                x : moment(measurement.timestamp).format(this.timeFormat),
+                y : measurement.value
+            });
 
         };
 
-        this.preloadData = function(dataX, dataY, key)
+        this.preloadData = function(dataSet, key)
         {
-            var y = [key];
-            var x = [key+'.t'];
-            y = y.concat(dataY);
-            x = x.concat(dataX);
-            self.chart.load(
-                {
-                    columns : [
-                        x,
-                        y,
-                    ]
-                }
-            );
+            dataSet.forEach(function(entry){
+                entry.x = moment(entry.x).format(this.timeFormat);
+            }, this);
+
+            this.chartData.datasets[keyDataSetMap[key]].data = dataSet;
+            this.chart.update();
 
         };
 

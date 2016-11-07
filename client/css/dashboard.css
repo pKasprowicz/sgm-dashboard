@@ -1,3 +1,8 @@
+
+.panel { border-radius: 0 !important; }
+
+.panel-heading { border-radius: 0 !important; }
+
 #measurements .panel.disabled{
     border:0;
 }

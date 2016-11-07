@@ -1,135 +1,106 @@
+/*global moment*/
+/*global liveBoardApp*/
+/*global Chart*/
 liveBoardApp.factory('HumidChart', function()
 {
 
-    var prepareRegions = function()
-    {
-        var dates = [];
-
-        for(var i = 0; i < 4; ++i)
-        {
-            dates.push(new Date());
-            dates[i].setHours(0);
-            dates[i].setMinutes(0);
-            dates[i].setSeconds(0);
-            dates[i].setMilliseconds(0);
-        }
-
-        for (var i=dates.length; i>1; --i)
-        {
-            dates[i-2].setDate(dates[i-1].getDate() - 1);
-        }
-        return dates;
-    }
-
     var factory = function(deviceId)
     {
-        var self = this;
+        this.chartCanvas = document.getElementById(deviceId + '-chart-humid').getContext('2d');
+        this.timeFormat = 'MM/DD/YYYY HH:mm';
+
+        this.chartOptions = {
+            tooltips : {
+                mode : 'x-axis',
+                titleFontFamily : 'monospace',
+                bodyFontFamily : 'monospace',
+            },
+            scales: {
+                xAxes: [
+                    {
+        				type: "time",
+        				time: {
+        					format: this.timeFormat,
+        				},
+        				scaleLabel: {
+        					display: true,
+        				}
+			        }
+    			],
+    			yAxes: [
+                    {
+                        id: 'humid',
+                        type: 'linear',
+                        position: 'left',
+                        scalePositionLeft: true,
+                        ticks : {
+                            min : 0,
+                            max : 100,
+                            fontColor : "rgba(31, 112, 201, 1)",
+                        },
+                    },
+                    {
+                        id: 'humid2',
+                        type: 'linear',
+                        position: 'right',
+                        scalePositionLeft: false,
+                        ticks : {
+                            min : 0,
+                            max : 100,
+                            fontColor : "rgba(31, 112, 201, 1)",
+                        },
+                    },
+                ],
+            }
+        };
+
+        this.chartData = {
+            datasets : [
+                {
+                    data : [],
+                    label : 'Humidity [%]',
+                    backgroundColor: "rgba(31, 112, 201, 0.4)",
+                    borderColor: "rgba(31, 112, 201, 1)",
+                    borderCapStyle: 'butt',
+                    yAxisID : 'humid',
+                    fill : true,
+                },
+            ]
+        }
+
         this.generateChart = function()
         {
-            var dates = prepareRegions();
-
-            self.chart = c3.generate(
-            {
-                title : {
-                    text : 'Air Humidity over time'
-                    },
-                size : {
-                    height: 250,
-                },
-                bindto: 'div#'+deviceId+'-chart-humid',
-                data: {
-                    x : 't1',
-                    columns : [
-                        ['humidity'],
-                        ['t1'],
-                    ],
-                    names : {
-                        humidity : "Air Humidity [%]",
-                    },
-                    colors : {
-                        humidity : "blue"
-                    },
-                    xFormat: '%Y-%m-%dT%H:%M:%S.%LZ',
-                    type : 'line',
-                },
-                axis : {
-                    x: {
-                        type: 'timeseries',
-                        tick: {
-                            format: '%Y-%m-%d %H:%M',
-                            count : 5
-                            // values : dates
-                        },
-                        show: true,
-                    },
-                    y : {
-                        min : 0,
-                        max : 100,
-                        show: true,
-                        tick: {
-                            format: d3.format("4.2f"),
-                            values : [0, 50, 100]
-                        },
-                    },
-                    y2 : {
-                        min : 0,
-                        max : 100,
-                        show: true,
-                        tick: {
-                            format: d3.format("4.2f"),
-                            values : [0, 50, 100]
-                        },
-                    },
-                },
-                zoom : {
-                    enabled : true
-                }
-                // regions: [
-                //     {end : dates[0]},
-                //     {start : dates[1], end: dates[2]},
-                //     {start: dates[3]}
-                //     ]
+            this.chart = new Chart(this.chartCanvas, {
+                type: 'line',
+                data: this.chartData,
+                options : this.chartOptions,
             });
 
         };
 
         this.appendMeasurement = function(measurement)
         {
-            if (!self.chart)
+            if (!this.chart)
             {
                 console.error('Cannot append data to unexisting chart');
                 return;
             }
 
-            var timestampName = measurement.quantity + '.timestamp';
-            self.chart.flow(
-                {
-                    columns : [
-                        ['humidity', Number(measurement.value)],
-                        ['t1', measurement.timestamp]
-                    ],
-                    length : 0
-                }
-            );
+            this.chartData.datasets[0].data.push({
+                x : moment(measurement.timestamp).format(this.timeFormat),
+                y : measurement.value
+            });
 
         };
 
-        this.preloadData = function(dataX, dataY, key)
+        this.preloadData = function(dataSet, key)
         {
-            var y = ['humidity'];
-            var x = ['t1'];
+            dataSet.forEach(function(entry){
+                entry.x = moment(entry.x).format(this.timeFormat);
+            }, this);
 
-            y = y.concat(dataY);
-            x = x.concat(dataX);
-
-            self.chart.load(
-                {
-                    columns : [
-                        x,
-                        y
-                    ]
-                }
-            );
+            this.chartData.datasets[0].data = dataSet;
+            this.chart.update();
 
         };
 

@@ -63,7 +63,7 @@ liveBoardApp.factory('HumidChart', function()
                     borderColor: "rgba(31, 112, 201, 1)",
                     borderCapStyle: 'butt',
                     yAxisID : 'humid',
-                    fill : true,
+                    fill : false,
                 },
             ]
         }
@@ -90,6 +90,8 @@ liveBoardApp.factory('HumidChart', function()
                 x : moment(measurement.timestamp).format(this.timeFormat),
                 y : measurement.value
             });
+
+            this.chart.update();
 
         };
 

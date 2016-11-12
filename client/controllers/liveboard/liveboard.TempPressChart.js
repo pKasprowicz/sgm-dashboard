@@ -67,7 +67,7 @@ liveBoardApp.factory('TempPressChart', function()
                     borderColor: "rgba(114, 159, 44, 1)",
                     borderCapStyle: 'butt',
                     yAxisID : 'press',
-                    fill : true,
+                    fill : false,
                 },
                 {
                     data : [],
@@ -76,7 +76,7 @@ liveBoardApp.factory('TempPressChart', function()
                     borderColor: "rgba(215,40,40,1)",
                     borderCapStyle: 'butt',
                     yAxisID : 'temp',
-                    fill : true
+                    fill : false
                 },
             ]
         }
@@ -103,6 +103,8 @@ liveBoardApp.factory('TempPressChart', function()
                 x : moment(measurement.timestamp).format(this.timeFormat),
                 y : measurement.value
             });
+
+            this.chart.update();
 
         };
 

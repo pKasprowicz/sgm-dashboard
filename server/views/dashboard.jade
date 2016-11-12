@@ -10,7 +10,7 @@ append body
           div(class="panel panel-primary #{device.status}")
             div(class="panel-heading #{device.status}") Device #{device.id}
             div(class="panel-body #{device.status}")
-              table(class="table table-hover invisible" ng-class='{"invisible": !tablesLoaded}')
+              table(class="table table-condensed table-hover invisible" ng-class='{"invisible": !tablesLoaded}')
                 caption Location: #{device.loc}
                 thead
                   tr
@@ -32,12 +32,14 @@ append body
       .col-sm-3
 
 append styles
-  link(rel="stylesheet",href="dashboard.css")
-  link(rel="stylesheet",href="c3.min.css")
+  link(rel="stylesheet", href="dashboard.css")
+  link(rel="stylesheet", href="c3.min.css")
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Open+Sans")
 
 append scripts
   script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js")
   script(src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.3.0/Chart.min.js")
+  script(src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/1.6.6/fabric.min.js")
   script(src="liveboard/liveboard.module.js")
   script(src="liveboard/liveboard.dataprovider.js")
   script(src="liveboard/liveboard.devicelist.js")

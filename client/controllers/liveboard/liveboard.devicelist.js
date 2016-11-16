@@ -3,6 +3,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       $scope.totalMeasurementPoints = 0;
       $scope.tablesLoaded = 0;
+      $scope.test = "69";
       var devChartList = [];
       var populateMeasurementTable = function(message, liveUpdateCallback)
       {

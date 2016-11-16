@@ -86,7 +86,7 @@ liveBoardApp.factory('HumidChart', function()
                 return;
             }
 
-            this.chartData.datasets[0].data.push({
+            this.chartData.datasets[0].data.unshift({
                 x : moment(measurement.timestamp).format(this.timeFormat),
                 y : measurement.value
             });

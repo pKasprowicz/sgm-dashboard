@@ -1,7 +1,59 @@
+/* Coolors Exported Palette - coolors.co/483c46-3c6e71-70ae6e-beee62-f4743b */
 
-.panel { border-radius: 0 !important; }
+/* HSL */
+/*$color1: hsla(310%, 9%, 26%, 1);*/
+/*$color2: hsla(183%, 31%, 34%, 1);*/
+/*$color3: hsla(118%, 28%, 56%, 1);*/
+/*$color4: hsla(81%, 80%, 66%, 1);*/
+/*$color5: hsla(18%, 89%, 59%, 1);*/
 
-.panel-heading { border-radius: 0 !important; }
+/* RGB */
+/*$color1: rgba(72, 60, 70, 1);*/
+/*$color2: rgba(60, 110, 113, 1);*/
+/*$color3: rgba(112, 174, 110, 1);*/
+/*$color4: rgba(190, 238, 98, 1);*/
+/*$color5: rgba(244, 116, 59, 1);*/
+
+* {
+    font-family : 'Open Sans';
+}
+
+.canvas-container {
+    float: none;
+    margin : 0 auto;
+}
+
+.navbar-inverse {
+    border-radius : 0;
+    background-color : #23231A;
+}
+
+.panel {
+    border-radius: 0;
+    border : 0;
+    font-family : 'Open Sans';
+}
+
+.panel-primary>.panel-heading {
+    background-color : #322F20;
+    border-color : #322F20;
+}
+
+.panel-body {
+    padding : 0px;
+}
+
+.panel-heading {
+    border-radius: 0;
+    font-family : 'Open Sans';
+}
+
+.well {
+    border-radius: 0;
+    box-shadow : none;
+    font-family : 'Open Sans';
+    border : none;
+}
 
 #measurements .panel.disabled{
     border:0;

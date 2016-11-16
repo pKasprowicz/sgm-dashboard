@@ -1,28 +1,40 @@
-extends ../../node_modules/jade-bootstrap/_bootstrap
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(http-equiv="X-UA-Compatible", content="IE=edge")
+    meta(name="viewport",content="width=device-width, initial-scale=1")
+    meta(name="description",content="")
+    meta(name="author",content="")
+    link(rel="icon",href="../../favicon.ico")
+    title= title
+    block styles
+      link(rel="stylesheet",href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
+  body(data-spy="scroll",data-target=".scrollspy")
+  block body
+    nav(class="navbar navbar-inverse")
+      .container-fluid
+        .navbar-header
+          .navbar-brand
+            |SGMeteo Live Dashboard
+        ul(class="nav navbar-nav" id="menu")
+          li(id="about")
+            a(href="/sgmeteo/about") About
+          li(id="dashboard")
+            a(href="/sgmeteo/dashboard") Srebrna Góra
 
-append scripts
-  script(src="/sgmeteo/mqttws31.js")
-  script(src="/sgmeteo/DataReceiver.js")
-  script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
-  script(src="/sgmeteo/socket.io/socket.io.js")
+    block scripts
+      script(src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js")
+      script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
+      script(src="/sgmeteo/mqttws31.js")
+      script(src="/sgmeteo/DataReceiver.js")
+      script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.js")
+      script(src="/sgmeteo/socket.io/socket.io.js")
+      script.
+        $(document).ready(
+          function()
+          {
 
-  script.
-    $(document).ready(
-      function()
-      {
-
-        $("#menu ##{page}").addClass("active");
-      }
-    );
-
-append body
-  nav(class="navbar navbar-inverse")
-    .container-fluid
-      .navbar-header
-        .navbar-brand
-          |SGMeteo Live Dashboard
-      ul(class="nav navbar-nav" id="menu")
-        li(id="about")
-          a(href="/sgmeteo/about") About
-        li(id="dashboard")
-          a(href="/sgmeteo/dashboard") Srebrna Góra
+            $("#menu ##{page}").addClass("active");
+          }
+        );

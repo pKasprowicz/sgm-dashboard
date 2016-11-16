@@ -4,32 +4,26 @@ append body
   div(ng-app="Liveboard" ng-controller="LiveboardController")
     br
     .row(id="measurements")
-      .col-sm-3
-      .col-sm-6
+      .col-md-3
+      .col-md-6
         each device in devList
           div(class="panel panel-primary #{device.status}")
-            div(class="panel-heading #{device.status}") Device #{device.id}
+            div(class="panel-heading #{device.status}")
+              h3(style="font-weight : bold; margin-top: 10px;") #{device.loc}
             div(class="panel-body #{device.status}")
-              table(class="table table-condensed table-hover invisible" ng-class='{"invisible": !tablesLoaded}')
-                caption Location: #{device.loc}
-                thead
-                  tr
-                    th Measurement
-                    th Value
-                    th MsgCount
-                tbody
-                  each measurement in device.measurements
-                    tr
-                      td #{measurement.description}
-                      td(id="#{measurement.quantity}") {{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].value}}
-                      td(id="#{measurement.quantity}Count") {{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].msgCount}}
+              h4 Current measurements
+              div(class="row" style="margin-bottom : 20px; margin-top : 20px")
+                each measurement in device.measurements
+                  .col-md-4
+                    ng-weather(id="#{device.id}-#{measurement.quantity}" measurement="{{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].value}}" quantity="#{measurement.quantity}")
               div(class="well well-sm")
                 |Last update :
                 span(id="timestamp")
                   | {{lastTimestamp}}
+              h4 Historical Data
               canvas(id="#{device.id}-chart-temppress" width="900" height="300")
               canvas(id="#{device.id}-chart-humid" width="900" height="300")
-      .col-sm-3
+      .col-md-3
 
 append styles
   link(rel="stylesheet", href="dashboard.css")
@@ -45,3 +39,4 @@ append scripts
   script(src="liveboard/liveboard.devicelist.js")
   script(src="liveboard/liveboard.TempPressChart.js")
   script(src="liveboard/liveboard.HumidChart.js")
+  script(src="liveboard/liveboard.ValueTile.js")

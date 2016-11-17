@@ -14,8 +14,8 @@ liveBoardApp.factory('valueTile', function()
 
     var factory = function(id, heading, postfix)
     {
-        this.tileWidth = 250;
-        this.tileHeight = 250;
+        this.tileWidth = 300;
+        this.tileHeight = 300;
 
         //Construct background
 
@@ -33,9 +33,9 @@ liveBoardApp.factory('valueTile', function()
         //Construct heading
 
         this.tileHeading = new fabric.Text(heading, {
-          top: 10,
+          top: 55,
           fontFamily: 'Open Sans',
-          fontSize : '30',
+          fontSize : '24',
           fontWeight : 'bold',
           textAlign : 'center',
           fill : rgba2hex(148, 193, 64, 0.4),
@@ -49,12 +49,12 @@ liveBoardApp.factory('valueTile', function()
         //Construct value text
 
         this.valueText = new fabric.Text('', {
-          top: 110,
+          top: 120,
           fontFamily: 'Open Sans',
-          fontSize : '50',
+          fontSize : '75',
           fontWeight : 'bold',
           textAlign : 'center',
-          fill : rgba2hex(148, 193, 64, 0.3),
+          fill : rgba2hex(148, 193, 64, 0.0),
           selectable : false,
           lockMovementX : true,
           lockMovementY : true,
@@ -64,28 +64,52 @@ liveBoardApp.factory('valueTile', function()
         //Construct unit text
 
         this.unitText = new fabric.Text(postfix, {
-          top: 170,
+          top: 200,
           fontFamily: 'Open Sans',
-          fontSize : '28',
+          fontSize : '30',
           fontWeight : 'bold',
           textAlign : 'center',
-          fill : rgba2hex(148, 193, 64, 0.3),
+          fill : rgba2hex(148, 193, 64, 0.4),
           selectable : false,
           lockMovementX : true,
           lockMovementY : true,
         });
         this.unitText.setLeft((this.tileWidth - this.unitText.width) / 2);
 
+        //Construct update timestamp text
+
+        this.timestampText = new fabric.Text('Last updated at n/a', {
+          top: 270,
+          fontFamily: 'Open Sans',
+          fontSize : '15',
+          textAlign : 'center',
+          fill : rgba2hex(50, 47, 32, 0.7),
+          selectable : false,
+          lockMovementX : true,
+          lockMovementY : true,
+        });
+        this.timestampText.setLeft((this.tileWidth - this.timestampText.width) / 2);
+
+        //Render content
+
         this.dash = new fabric.Canvas(id);
         this.dash.add(this.background);
         this.dash.add(this.tileHeading);
         this.dash.add(this.valueText);
         this.dash.add(this.unitText);
+        this.dash.add(this.timestampText);
 
-        this.update = function(value)
+        this.update = function(value, timestamp)
         {
             this.valueText.setText(value);
             this.valueText.setLeft((this.tileWidth - this.valueText.width) / 2);
+
+            // if(timestamp != "undefined")
+            // {
+                this.timestampText.setText('Last updated at ' + timestamp);
+                this.timestampText.setLeft((this.tileWidth - this.timestampText.width) / 2);
+            // }
+
             this.dash.renderAll();
         }
     }
@@ -99,9 +123,10 @@ liveBoardApp.factory('valueTile', function()
     return {
         restrict : 'EAC',
         scope : {
-          id          : '=',
-          quantity    : '=',
-          measurement : '@'
+        //   id            : '=',
+        //   quantity      : '=',
+          timestamp     : '@',
+          measurement   : '@',
         },
         link : function(scope, element, attrs)
                 {
@@ -110,7 +135,7 @@ liveBoardApp.factory('valueTile', function()
 
                     var canvasId = attrs.id + "-tile";
 
-                    var canvasElement = angular.element("<canvas id=\"" + canvasId + "\" width=250px height=250px>DUPA</canvas>");
+                    var canvasElement = angular.element("<canvas id=\"" + canvasId + "\" width=300px height=300px>DUPA</canvas>");
 
                     element.append(canvasElement);
 
@@ -135,7 +160,7 @@ liveBoardApp.factory('valueTile', function()
                     var tile = new valueTile(canvasId, caption, postfix);
 
                     scope.$watch('measurement', function(value){
-                        tile.update(value);
+                        tile.update(value, scope.timestamp);
                     });
                 }
     };

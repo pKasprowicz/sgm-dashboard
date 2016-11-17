@@ -5,22 +5,22 @@ append body
     br
     .row(id="measurements")
       .col-md-3
-      .col-md-6
+      .col-md-6.nopad
         each device in devList
           div(class="panel panel-primary #{device.status}")
             div(class="panel-heading #{device.status}")
               h3(style="font-weight : bold; margin-top: 10px;") #{device.loc}
             div(class="panel-body #{device.status}")
-              h4 Current measurements
+              // h4 Current measurements
               div(class="row" style="margin-bottom : 20px; margin-top : 20px")
                 each measurement in device.measurements
-                  .col-md-4
-                    ng-weather(id="#{device.id}-#{measurement.quantity}" measurement="{{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].value}}" quantity="#{measurement.quantity}")
-              div(class="well well-sm")
-                |Last update :
-                span(id="timestamp")
-                  | {{lastTimestamp}}
-              h4 Historical Data
+                  .col-md-4.nopad
+                    ng-weather(id="#{device.id}-#{measurement.quantity}" timestamp="{{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].lastTimestamp}}" measurement="{{devSpecList['#{device.id}'].measurements['#{measurement.place}']['#{measurement.quantity}'].value}}" quantity="#{measurement.quantity}")
+              // div(class="well well-sm")
+              //   |Last update :
+              //   span(id="timestamp")
+              //     | {{lastTimestamp}}
+              // h4 Historical Data
               canvas(id="#{device.id}-chart-temppress" width="900" height="300")
               canvas(id="#{device.id}-chart-humid" width="900" height="300")
       .col-md-3
@@ -28,7 +28,7 @@ append body
 append styles
   link(rel="stylesheet", href="dashboard.css")
   link(rel="stylesheet", href="c3.min.css")
-  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Open+Sans")
+  link(rel="stylesheet", href="https://fonts.googleapis.com/css?family=Open+Sans:400,700")
 
 append scripts
   script(src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.15.2/moment.min.js")

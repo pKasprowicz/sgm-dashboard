@@ -99,7 +99,7 @@ liveBoardApp.factory('TempPressChart', function()
                 return;
             }
 
-            this.chartData.datasets[keyDataSetMap[measurement.quantity]].data.unshift({
+            this.chartData.datasets[keyDataSetMap[measurement.quantity]].data.push({
                 x : moment(measurement.timestamp).format(this.timeFormat),
                 y : measurement.value
             });

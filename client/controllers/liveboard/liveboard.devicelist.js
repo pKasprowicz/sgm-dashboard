@@ -11,6 +11,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
         {
           return;
         }
+        $scope.devSpecList[message.devId].measurements[message.target][message.quantity].lastTimestamp = moment(message.timestamp).format('MM/DD/YYYY HH:mm');
         $scope.devSpecList[message.devId].measurements[message.target][message.quantity].value = message.value;
         $scope.devSpecList[message.devId].measurements[message.target][message.quantity].msgCount += 1;
 
@@ -30,7 +31,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             return true;
           }
         });
-        $scope.lastTimestamp = moment(measurement.timestamp).format('MM/DD/YYYY HH:mm');
       }
 
       var initializeDeviceList = function(rawDeviceList)
@@ -67,12 +67,10 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
                 {
                   $scope.devSpecList[device.id].measurements[measurementSpec.place] = [];
                 }
-                $scope.devSpecList[device.id].measurements[measurementSpec.place][measurementSpec.quantity] = {value : 'n/a', msgCount : 0};
+                $scope.devSpecList[device.id].measurements[measurementSpec.place][measurementSpec.quantity] = {value : 'n/a', msgCount : 0, lastTimestamp : 'n/a'};
 
               });
             });
-
-            $scope.lastTimestamp = "n/a";
       }
 
       var constructHistoryData = function(history)

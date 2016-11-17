@@ -18,6 +18,19 @@
     font-family : 'Open Sans';
 }
 
+body {
+    background-color : #f5f5f5;
+}
+
+h4 {
+    background-color : #f5f5f5;
+}
+
+.nopad {
+    padding-left : 0;
+    padding-right : 0;
+}
+
 .canvas-container {
     float: none;
     margin : 0 auto;
@@ -41,6 +54,7 @@
 
 .panel-body {
     padding : 0px;
+    background-color : #f5f5f5;
 }
 
 .panel-heading {

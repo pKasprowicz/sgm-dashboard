@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 //Setting routes for express server
-require('./routes.js')(app)
+require('./server/routes.js')(app)
 
 var measurementsDb = require('./server/db_manager.js');
 
@@ -22,8 +22,8 @@ var measurementsDb = require('./server/db_manager.js');
 var io = require('socket.io')(server);
 
 //MQTT broker initialization
-var mqtt_broker = require('./server/scripts/mqtt_broker');
-var mqtt_process = require('./mqtt_processing');
+var mqtt_broker = require('./server/mqtt_broker');
+var mqtt_process = require('./server/mqtt_processing');
 
 mqtt_broker.serverSettings.port = 1883;
 

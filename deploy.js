@@ -7,7 +7,8 @@ var options = {
     name : processName,
     execMode : 'fork',
     output : '/var/logs/SGMdashboard.log',
-    error : '/var/logs/SGMdashboard.log'
+    error : '/var/logs/SGMdashboard.log',
+    logDateFormat : 'YYYY-MM-DD HH:mm Z',
 };
 
 var startCallback = function(err, proc)

@@ -6,8 +6,8 @@ var options = {
     script : './app.js',
     name : processName,
     execMode : 'fork',
-    output : '/var/logs/SGMdashboard.log',
-    error : '/var/logs/SGMdashboard.log',
+    output : '/var/log/SGMdashboard.log',
+    error : '/var/log/SGMdashboard.log',
     logDateFormat : 'YYYY-MM-DD HH:mm Z',
 };
 

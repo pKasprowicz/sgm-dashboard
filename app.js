@@ -53,7 +53,9 @@ mqtt_broker.launchBroker();
 
 //Starting the web server
 
-var server_port = 8081;
+console.log("Starting server in ", process.env.NODE_ENV, " environment")
+
+var server_port = process.env.PORT;
 var server_ip_address = '127.0.0.1';
 
 server.listen(server_port, server_ip_address, function()

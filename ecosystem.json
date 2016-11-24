@@ -1,0 +1,26 @@
+{
+  apps : [
+    {
+      name       : "SGMdashboard",
+      script     : "app.js",
+      out_file   : "/var/log/SGMdashboard.log",
+      error_file : "/var/log/SGMdashboard.log",
+      log_date_format  : "YYYY-MM-DD HH:mm::ss",
+      env : {
+        NODE_ENV : "production",
+        PORT: "8081"
+      }
+    },
+    {
+      name       : "SGMdashboard-dev",
+      script     : "app.js",
+      out_file   : "/var/log/SGMdashboard-dev.log",
+      error_file : "/var/log/SGMdashboard-dev.log",
+      log_date_format  : "YYYY-MM-DD HH:mm::ss",
+      env : {
+        NODE_ENV : "development",
+        PORT: "8082"
+      },
+    },
+  ]
+}

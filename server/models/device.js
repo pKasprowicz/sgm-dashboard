@@ -16,6 +16,6 @@ var deviceSchema = new Schema(
 
       });
 
-var Device = mongoose.model('Device', deviceSchema);
+var DeviceEntry = mongoose.model('Device', deviceSchema);
 
-module.exports = Device;
+module.exports = DeviceEntry;

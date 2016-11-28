@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Measurements = require('./models/measurement');
+var Devices = require('./models/device');
 
 const HistoryMeasurementsCount = 24;
 
@@ -81,7 +82,7 @@ var getMeasurementsHistory = function(resultCallback, queryParameters)
     {
         resultCallback(entries.slice(entries.length - HistoryMeasurementsCount, entries.length));
     });
-}
+};
 
 var getRecentMeasurements = function(resultCallback)
 {
@@ -90,11 +91,20 @@ var getRecentMeasurements = function(resultCallback)
  {
     resultCallback(entries);
  });
-}
+};
+
+var getRegisteredPublishers = function(resultCallback)
+{
+    Devices.find({}, function(err, devices)
+    {
+        resultCallback(devices);
+    })
+};
 
 module.exports =
 {
     storeMeasurement,
     getMeasurementsHistory,
-    getRecentMeasurements
+    getRecentMeasurements,
+    getRegisteredPublishers
 }

@@ -46,7 +46,15 @@ var processIncomingMessage = function(packet)
     // var payload = [21, 11, 0, 0, 100, 0, 1, 0, 0, 0, 199, 20, 116, 87];
     console.log("Attempt to process packet", packet);
 
-    var matchList = topic.match(/([a-z0-9])+/g);
+    try
+    {
+        var matchList = topic.match(/([a-z0-9])+/g);
+    }
+    catch(e)
+    {
+        console.log('Cannot parse message');
+        return null;
+    }
 
     var packetRoot = matchList[0];
     if (packetRoot != "sgm")

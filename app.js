@@ -21,35 +21,27 @@ var measurementsDb = require('./server/db_manager.js');
 //Socket io initialization
 var io = require('socket.io')(server);
 
-//MQTT broker initialization
-var mqtt_broker = require('./server/mqtt_broker');
+var mqttReceiver = require('./server/mqtt_receiver');
 var mqtt_process = require('./server/mqtt_processing');
 
-mqtt_broker.serverSettings.port = 1883;
 
 io.on('conection', function(socket){
   console.log('User connected to socket');
 });
 
-mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
+mqttReceiver.callbacks.onMessageArrived = function(topic, message, packet)
 {
-  console.log("Message published!");
-  var message = mqtt_process.processIncomingMessage(packet);
-  if (!message)
+  console.log("Message arrived!");
+  var measurement = mqtt_process.processIncomingMessage(message);
+  if (!measurement)
   {
     return;
   }
-  measurementsDb.storeMeasurement(message);
-  io.emit('val change', { for: 'everyone', message });
-  console.log(packet);
+  measurementsDb.storeMeasurement(measurement);
+  io.emit('val change', { for: 'everyone', measurement });
 }
 
-mqtt_broker.callbacks.onClientSubscribedCallback = function(topic, client)
-{
-  console.log("Subscribed to ", topic);
-}
-
-mqtt_broker.launchBroker();
+mqttReceiver.connect();
 
 //Starting the web server
 

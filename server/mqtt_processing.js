@@ -38,12 +38,10 @@ function packetToUint16(packet, offset)
     return value;
 }
 
-var processIncomingMessage = function(packet)
+var processIncomingMessage = function(packet, sendingClient)
 {
     var topic = packet.topic;
     var payload = packet.payload;
-    //DEBUG
-    // var payload = [21, 11, 0, 0, 100, 0, 1, 0, 0, 0, 199, 20, 116, 87];
     console.log("Attempt to process packet", packet);
 
     var matchList = topic.match(/([a-z0-9])+/g);
@@ -55,7 +53,7 @@ var processIncomingMessage = function(packet)
     }
 
     var retObj = {};
-    retObj.devId = matchList[1];
+    retObj.devId = sendingClient.id;
     retObj.target = matchList[2];
     retObj.quantity = matchList[3];
     retObj.value = parsePacket(payload);

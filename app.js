@@ -34,7 +34,7 @@ io.on('conection', function(socket){
 mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
 {
   console.log("Message published!");
-  var message = mqtt_process.processIncomingMessage(packet);
+  var message = mqtt_process.processIncomingMessage(packet, client);
   if (!message)
   {
     return;

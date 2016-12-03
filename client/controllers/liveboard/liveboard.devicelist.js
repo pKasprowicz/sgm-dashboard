@@ -111,7 +111,6 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
             populateMeasurementTable(measurement);
           });
           $scope.tablesLoaded = 1;
-          $scope.lastTimestamp = moment(recent.data[0].timestamp).format('MM/DD/YYYY HH:mm')
         });
 
       }

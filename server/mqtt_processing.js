@@ -54,8 +54,8 @@ var processIncomingMessage = function(packet, sendingClient)
 
     var retObj = {};
     retObj.devId = sendingClient.id;
-    retObj.target = matchList[2];
-    retObj.quantity = matchList[3];
+    retObj.target = matchList[1];
+    retObj.quantity = matchList[2];
     retObj.value = parsePacket(payload);
 
     var rawDate = packetToUint32(payload, 10);

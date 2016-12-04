@@ -1,3 +1,15 @@
+var packetDispatcher = {
+    'measurement' : {
+        parsePacket : function(topic, payload){}
+    },
+    'message' : {
+        parsePacket : function(topic, payload){}
+    },
+    'test' : {
+        parsePacket : function(topic, payload){}
+    }
+    };
+
 function parsePacket(packet)
 {
     var formattedValue =  (packetToUint32(packet, 0) / packetToUint16(packet, 4)).toFixed(2);
@@ -64,8 +76,8 @@ var processIncomingMessage = function(packet)
 
     var retObj = {};
     retObj.devId = matchList[1];
-    retObj.target = matchList[2];
-    retObj.quantity = matchList[3];
+    retObj.target = matchList[3];
+    retObj.quantity = matchList[4];
     retObj.value = parsePacket(payload);
 
     var rawDate = packetToUint32(payload, 10);

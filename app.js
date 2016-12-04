@@ -39,7 +39,7 @@ mqttReceiver.callbacks.onMessageArrived = function(topic, message, packet)
   }
   measurementsDb.storeMeasurement(measurement);
   io.emit('val change', { for: 'everyone', measurement });
-}
+};
 
 mqttReceiver.connect();
 

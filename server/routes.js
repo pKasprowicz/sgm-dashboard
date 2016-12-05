@@ -6,7 +6,7 @@ var Measurments = require('./models/measurement');
 
 var measurementsDb = require('./db_manager.js');
 
-var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
+var mongoDbUrl = 'sgm:sgm@ds025603.mlab.com:25603/dashboard';
 
 module.exports = function(app)
 {

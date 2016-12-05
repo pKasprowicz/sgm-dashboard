@@ -20,7 +20,7 @@ if (process.env.VCAP_SERVICES) {
   mongo = {
     db:       'dashboard',
     host:     'ds025603.mlab.com',
-    password: '***REMOVED***',
+    password: 'sgm',
     port:     '25603',
     ssl:      false,
     url:      this.host

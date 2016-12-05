@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //Setting routes for express server
 require('./server/routes.js')(app)
 
-var measurementsDb = require('./server/db_manager.js');
+var measurementsDb = require('db-manager');
 
 //Socket io initialization
 var io = require('socket.io')(server);

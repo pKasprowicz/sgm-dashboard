@@ -1,12 +1,7 @@
 var mqttBroker = require('./mqtt_broker');
-var dbManager = require('../server/db_manager');
-var mongoose = require('mongoose');
+var dbManager = require('db-manager');
 
 mqttBroker.serverSettings.port = 1883;
-
-var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
-
-mongoose.connect(mongoDbUrl);
 
 var allowedPublishers = [];
 

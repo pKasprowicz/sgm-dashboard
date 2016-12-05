@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var Measurement = require('../models/measurement')
 
-var mongoDbUrl = 'admin:***REMOVED***@ds025603.mlab.com:25603/dashboard';
+var mongoDbUrl = 'sgm:sgm@ds025603.mlab.com:25603/dashboard';
 
 console.log('Connecting to ', mongoDbUrl);
 

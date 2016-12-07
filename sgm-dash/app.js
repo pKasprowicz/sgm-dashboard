@@ -48,7 +48,7 @@ mqttReceiver.connect();
 console.log("Starting server in ", process.env.NODE_ENV, " environment")
 
 var server_port = process.env.PORT;
-var server_ip_address = '127.0.0.1';
+var server_ip_address = process.env.IP || '0.0.0.0';
 
 server.listen(server_port, server_ip_address, function()
 {

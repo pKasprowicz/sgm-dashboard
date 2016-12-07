@@ -100,7 +100,7 @@ var getRegisteredPublishers = function(resultCallback)
 {
     Devices.find({}, function(err, devices)
     {
-        resultCallback(devices);
+        resultCallback(err, devices);
     })
 };
 

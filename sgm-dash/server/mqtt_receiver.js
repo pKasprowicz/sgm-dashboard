@@ -1,7 +1,15 @@
 const mqtt = require('mqtt');
+var dns = require('dns');
 var client = {};
 
 var brokerUrl = 'mqtt://127.0.0.1';
+
+dns.lookup('broker', function(err, addr, family){
+    if (addr != null)
+    {
+        brokerUrl = 'mqtt://broker';
+    }
+});
 
 var callbacks = {
     onMessageArrived : function(topic, message, packet){},

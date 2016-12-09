@@ -1,0 +1,15 @@
+{
+  "name": "db-manager",
+  "version": "1.0.0",
+  "description": "sgmeteo database utility functions",
+  "private": "true",
+  "main": "db-manager.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Piotr Kasprowicz",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^4.7.1"
+  }
+}

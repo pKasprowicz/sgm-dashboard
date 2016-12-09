@@ -1,5 +1,16 @@
 {
   apps : [
+     {
+      name       : "SGMbroker",
+      script     : "./broker/app.js",
+      out_file   : "/var/log/SGMbroker.log",
+      error_file : "/var/log/SGMbroker.log",
+      log_date_format  : "YYYY-MM-DD HH:mm::ss",
+      env : {
+        NODE_ENV : "production",
+        PORT: "8081"
+      }
+    },
     {
       name       : "SGMdashboard",
       script     : "app.js",

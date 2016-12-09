@@ -16,22 +16,20 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 //Setting routes for express server
 require('./server/routes.js')(app)
 
-var measurementsDb = require('./server/db_manager.js');
+var measurementsDb = require('db-manager');
 
 //Socket io initialization
 var io = require('socket.io')(server);
 
-//MQTT broker initialization
-var mqtt_broker = require('./server/mqtt_broker');
+var mqttReceiver = require('./server/mqtt_receiver');
 var mqtt_process = require('./server/mqtt_processing');
 
-mqtt_broker.serverSettings.port = 1883;
 
 io.on('conection', function(socket){
   console.log('User connected to socket');
 });
 
-mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
+mqttReceiver.callbacks.onMessageArrived = function(packet, client)
 {
   console.log("Message published!");
   var message = mqtt_process.processIncomingMessage(packet, client);
@@ -39,24 +37,18 @@ mqtt_broker.callbacks.onMessagePublishedCallback = function(packet, client)
   {
     return;
   }
-  measurementsDb.storeMeasurement(message);
-  io.emit('val change', { for: 'everyone', message });
-  console.log(packet);
-}
+  measurementsDb.storeMeasurement(measurement);
+  io.emit('val change', { for: 'everyone', measurement });
+};
 
-mqtt_broker.callbacks.onClientSubscribedCallback = function(topic, client)
-{
-  console.log("Subscribed to ", topic);
-}
-
-mqtt_broker.launchBroker();
+mqttReceiver.connect();
 
 //Starting the web server
 
 console.log("Starting server in ", process.env.NODE_ENV, " environment")
 
 var server_port = process.env.PORT;
-var server_ip_address = '127.0.0.1';
+var server_ip_address = process.env.IP || '0.0.0.0';
 
 server.listen(server_port, server_ip_address, function()
 {

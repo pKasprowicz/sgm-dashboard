@@ -1,3 +1,15 @@
+var packetDispatcher = {
+    'measurement' : {
+        parsePacket : function(topic, payload){}
+    },
+    'message' : {
+        parsePacket : function(topic, payload){}
+    },
+    'test' : {
+        parsePacket : function(topic, payload){}
+    }
+    };
+
 function parsePacket(packet)
 {
     var formattedValue =  (packetToUint32(packet, 0) / packetToUint16(packet, 4)).toFixed(2);
@@ -44,7 +56,15 @@ var processIncomingMessage = function(packet, sendingClient)
     var payload = packet.payload;
     console.log("Attempt to process packet", packet);
 
-    var matchList = topic.match(/([a-z0-9])+/g);
+    try
+    {
+        var matchList = topic.match(/([a-z0-9])+/g);
+    }
+    catch(e)
+    {
+        console.log('Cannot parse message');
+        return null;
+    }
 
     var packetRoot = matchList[0];
     if (packetRoot != "sgm")

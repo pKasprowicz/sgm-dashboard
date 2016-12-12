@@ -2,36 +2,32 @@
   apps : [
      {
       name       : "SGMbroker",
-      script     : "./broker/app.js",
+      script     : "./sgm-broker/app.js",
       out_file   : "/var/log/SGMbroker.log",
       error_file : "/var/log/SGMbroker.log",
       log_date_format  : "YYYY-MM-DD HH:mm::ss",
-      env : {
+      env_production : {
         NODE_ENV : "production",
-        PORT: "8081"
+      },
+      env_staging :  {
+        NODE_ENV : "staging",
       }
     },
     {
       name       : "SGMdashboard",
-      script     : "app.js",
+      script     : "./sgm-dash/app.js",
       out_file   : "/var/log/SGMdashboard.log",
       error_file : "/var/log/SGMdashboard.log",
       log_date_format  : "YYYY-MM-DD HH:mm::ss",
       env : {
-        NODE_ENV : "production",
-        PORT: "8081"
-      }
-    },
-    {
-      name       : "SGMdashboard-dev",
-      script     : "app.js",
-      out_file   : "/var/log/SGMdashboard-dev.log",
-      error_file : "/var/log/SGMdashboard-dev.log",
-      log_date_format  : "YYYY-MM-DD HH:mm::ss",
-      env : {
-        NODE_ENV : "development",
-        PORT: "8082"
+        PORT: "80"
       },
+      env_production : {
+        NODE_ENV : "production",
+      },
+      env_staging :  {
+        NODE_ENV : "staging",
+      }
     },
   ]
 }

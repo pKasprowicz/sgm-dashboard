@@ -38,8 +38,8 @@ mqttBroker.callbacks.authPublish = function(client, topic, payload, callback)
 {
     if(allowedPublishers.indexOf(client.id) != -1)
     {
+        topic = client.id + '/' + topic;
         console.log(client.id, ' published message');
-        payload.clientId = client.id;
         callback(null, true);
     }
     else

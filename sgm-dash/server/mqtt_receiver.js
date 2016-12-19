@@ -25,6 +25,7 @@ var connect = function()
         client.subscribe('sgm');
     
         client.on('message', function(topic, message, packet){
+            console.log('MESSAGE!');
             callbacks.onMessageArrived(topic, message, packet);
         });
         

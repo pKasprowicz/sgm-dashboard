@@ -22,13 +22,21 @@ var connect = function()
     client.on('connect', function ()
     {
         console.log('Receiver connected to ', brokerUrl);
-        client.subscribe('sgm');
-    
-        client.on('message', function(topic, message, packet){
-            console.log('MESSAGE!');
-            callbacks.onMessageArrived(topic, message, packet);
+        client.subscribe('sgm', function(err, granted){
+            if (err == null)
+            {
+                console.log('Server\'s subscription accepted!');
+            }
         });
-        
+    });
+    
+    client.on('message', function(topic, message, packet){
+        console.log('MESSAGE!');
+        callbacks.onMessageArrived(topic, message, packet);
+    });
+    
+    client.on('packetreceive', function(){
+        console.log('packetreceive event triggered!');
     });
     
 };

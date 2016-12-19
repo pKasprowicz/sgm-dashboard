@@ -22,7 +22,7 @@ var connect = function()
     client.on('connect', function ()
     {
         console.log('Receiver connected to ', brokerUrl);
-        client.subscribe('sgm', function(err, granted){
+        client.subscribe('sgm/#', function(err, granted){
             if (err == null)
             {
                 console.log('Server\'s subscription accepted!');

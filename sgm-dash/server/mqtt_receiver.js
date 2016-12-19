@@ -2,14 +2,7 @@ const mqtt = require('mqtt');
 var dns = require('dns');
 var client = {};
 
-var brokerUrl = 'mqtt://127.0.0.1';
-
-dns.lookup('broker', function(err, addr, family){
-    if (addr != null)
-    {
-        brokerUrl = 'mqtt://broker';
-    }
-});
+var brokerUrl = 'mqtt://broker';
 
 var callbacks = {
     onMessageArrived : function(topic, message, packet){},
@@ -17,6 +10,8 @@ var callbacks = {
 
 var connect = function()
 {
+    console.log('Connecting to ', brokerUrl);
+
     if (callbacks.onMessageArrived == {})
     {
         console.error("No callback for message event!");

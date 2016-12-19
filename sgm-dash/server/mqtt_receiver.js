@@ -17,7 +17,7 @@ var connect = function()
         console.error("No callback for message event!");
         return;
     }
-    client = mqtt.connect(brokerUrl);
+    client = mqtt.connect(brokerUrl, {qos : 1});
 
     client.on('connect', function ()
     {

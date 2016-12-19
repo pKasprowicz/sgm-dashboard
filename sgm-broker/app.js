@@ -5,7 +5,7 @@ mqttBroker.serverSettings.port = 1883;
 
 var allowedPublishers = [];
 
-dbManager.getRegisteredPublishers(function(devices)
+dbManager.getRegisteredPublishers(function(err, devices)
 {
     devices.forEach(function(device)
     {

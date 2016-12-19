@@ -17,12 +17,12 @@ var connect = function()
         console.error("No callback for message event!");
         return;
     }
-    client = mqtt.connect(brokerUrl, {qos : 1});
+    client = mqtt.connect(brokerUrl, {qos : 2});
 
     client.on('connect', function ()
     {
         console.log('Receiver connected to ', brokerUrl);
-        client.subscribe('sgm/#',{qos : 1});
+        client.subscribe('sgm/#',{qos : 2});
     });
     client.on('message', function(topic, message, packet){
         callbacks.onMessageArrived(topic, message, packet);

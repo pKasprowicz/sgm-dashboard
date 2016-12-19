@@ -23,9 +23,10 @@ var connect = function()
     {
         console.log('Receiver connected to ', brokerUrl);
         client.subscribe('sgm', function(err, granted){
-        console.log('Server\'s subscription accepted!');
-        console.log(err);
-        console.log(granted);
+            if (err == null)
+            {
+                console.log('Server\'s subscription accepted!');
+            }
         });
     });
     
@@ -34,8 +35,9 @@ var connect = function()
         callbacks.onMessageArrived(topic, message, packet);
     });
     
-    client.on('packetreceive', function(){
+    client.on('packetreceive', function(packet){
         console.log('packetreceive event triggered!');
+        console.log(packet);
     });
     
 };

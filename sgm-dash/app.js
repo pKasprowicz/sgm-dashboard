@@ -33,7 +33,7 @@ mqttReceiver.callbacks.onMessageArrived = function(packet, client)
 {
   console.log("Message published!");
   var measurement = mqtt_process.processIncomingMessage(packet, client);
-  if (!message)
+  if (!measurement)
   {
     return;
   }

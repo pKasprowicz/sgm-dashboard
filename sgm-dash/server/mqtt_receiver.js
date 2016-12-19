@@ -22,7 +22,7 @@ var connect = function()
     client.on('connect', function ()
     {
         console.log('Receiver connected to ', brokerUrl);
-        client.subscribe('sgm/#');
+        client.subscribe('sgm/#',{qos : 1});
     });
     client.on('message', function(topic, message, packet){
         callbacks.onMessageArrived(topic, message, packet);

@@ -23,10 +23,13 @@ var connect = function()
     {
         console.log('Receiver connected to ', brokerUrl);
         client.subscribe('sgm');
+    
+        client.on('message', function(topic, message, packet){
+            callbacks.onMessageArrived(topic, message, packet);
+        });
+        
     });
-    client.on('message', function(topic, message, packet){
-        callbacks.onMessageArrived(topic, message, packet);
-    });
+    
 };
 
 module.exports = {

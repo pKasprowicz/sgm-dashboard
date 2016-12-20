@@ -17,7 +17,6 @@ dbManager.getRegisteredPublishers(function(err, devices)
 
 mqttBroker.callbacks.onMessagePublishedCallback = function(topic, client)
 {
-    console.log("client id : ", client.id);
     console.log("topic  : ", topic.topic);
     console.log("payload  : ", topic.payload);
 };

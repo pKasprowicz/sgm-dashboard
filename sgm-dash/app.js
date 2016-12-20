@@ -29,13 +29,10 @@ io.on('conection', function(socket){
   console.log('User connected to socket');
 });
 
-mqttReceiver.callbacks.onMessageArrived = function(topic, message, packet)
+mqttReceiver.callbacks.onMessageArrived = function(packet, client)
 {
-  console.log("Message received!");
-  console.log(topic);
-  console.log(message);
-  console.log(packet);
-  var measurement = mqtt_process.processIncomingMessage(topic, message, packet.client);
+  console.log("Message published!");
+  var measurement = mqtt_process.processIncomingMessage(packet, client);
   if (!measurement)
   {
     return;

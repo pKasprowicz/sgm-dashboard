@@ -17,14 +17,9 @@ dbManager.getRegisteredPublishers(function(err, devices)
 
 mqttBroker.callbacks.onMessagePublishedCallback = function(topic, client)
 {
-    //check if this is the new connection
-    if (client)
-    {
-        console.log("PUBLISHED");
-        console.log("client id : ", client.id);
-        console.log("topic  : ", topic.topic);
-        console.log("payload  : ", topic.payload);
-    }
+    console.log("client id : ", client.id);
+    console.log("topic  : ", topic.topic);
+    console.log("payload  : ", topic.payload);
 };
 
 mqttBroker.callbacks.onClientSubscribedCallback = function(topic, client)
@@ -38,7 +33,6 @@ mqttBroker.callbacks.authPublish = function(client, topic, payload, callback)
 {
     if(allowedPublishers.indexOf(client.id) != -1)
     {
-        topic = client.id + '/' + topic;
         console.log(client.id, ' published message');
         callback(null, true);
     }

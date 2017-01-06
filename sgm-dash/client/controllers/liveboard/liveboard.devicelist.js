@@ -25,7 +25,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
       var updateChartAndTimestamp = function(measurement)
       {
         devChartList[measurement.devId].some(function(chartDescriptor){
-          if (chartDescriptor.values[measurement.quantity])
+          if (chartDescriptor.values.indexOf(measurement.quantity) > -1)
           {
             chartDescriptor.chart.appendMeasurement(measurement);
             return true;

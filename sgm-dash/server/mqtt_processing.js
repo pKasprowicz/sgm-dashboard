@@ -50,11 +50,10 @@ function packetToUint16(packet, offset)
     return value;
 }
 
-var processIncomingMessage = function(packet, sendingClient)
+var processIncomingMessage = function(topic, message)
 {
-    var topic = packet.topic;
-    var payload = packet.payload;
-    console.log("Attempt to process packet", packet);
+    var payload = message.payload;
+    console.log("Attempt to process", topic);
 
     try
     {

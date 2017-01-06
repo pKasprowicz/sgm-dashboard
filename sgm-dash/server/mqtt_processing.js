@@ -64,6 +64,7 @@ var processIncomingMessage = function(topic, payload)
         return null;
     }
 
+    console.log(matchList);
     var packetRoot = matchList[0];
     if (packetRoot != "sgm")
     {

@@ -11,7 +11,7 @@ liveBoardApp.factory('LiveData', function()
           {
             console.log('Value changed');
             console.log(msg);
-            self.processValChangeCallback(msg.message);
+            self.processValChangeCallback(msg.measurement);
           });
       }
 

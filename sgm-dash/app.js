@@ -37,7 +37,8 @@ mqttReceiver.callbacks.onMessageArrived = function(topic, message, packet)
   {
     return;
   }
-  console.log("Storing measurement " + measurement);
+  console.log("Storing measurement ");
+  console.log(measurement);
   measurementsDb.storeMeasurement(measurement);
   io.emit('val change', { for: 'everyone', measurement });
 };

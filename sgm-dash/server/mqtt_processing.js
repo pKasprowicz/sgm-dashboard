@@ -76,6 +76,9 @@ var processIncomingMessage = function(topic, payload)
     retObj.quantity = matchList[3];
     retObj.value = parsePacket(payload);
 
+    console.log("retObj");
+    console.log(retObj);
+
     var rawDate = packetToUint32(payload, 10);
     retObj.timestamp = new Date(rawDate * 1000);
 

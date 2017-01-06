@@ -50,9 +50,8 @@ function packetToUint16(packet, offset)
     return value;
 }
 
-var processIncomingMessage = function(topic, message)
+var processIncomingMessage = function(topic, payload)
 {
-    var payload = message.payload;
     console.log("Attempt to process", topic);
 
     try

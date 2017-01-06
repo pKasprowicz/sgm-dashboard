@@ -56,7 +56,7 @@ var processIncomingMessage = function(topic, payload)
 
     try
     {
-        var matchList = topic.match(/([a-z0-9])+/g);
+        var matchList = topic.match(/([a-zA-Z0-9])+/g);
     }
     catch(e)
     {

@@ -32,13 +32,12 @@ io.on('conection', function(socket){
 mqttReceiver.callbacks.onMessageArrived = function(topic, message, packet)
 {
   console.log("Message published!");
-  console.log(message);
-  console.log(packet);
   var measurement = mqtt_process.processIncomingMessage(topic, message);
   if (!measurement)
   {
     return;
   }
+  console.log("Storing measurement " + measurement);
   measurementsDb.storeMeasurement(measurement);
   io.emit('val change', { for: 'everyone', measurement });
 };

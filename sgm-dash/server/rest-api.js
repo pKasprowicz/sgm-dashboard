@@ -8,10 +8,10 @@ MeasurementsLUT['humid']    = {desc : 'Wilgotność',  unit : '%'};
 
 var getWeather = function(callback)
 {
-    var weather = [];
-    
     dbManager.getRegisteredPublishers(function(err, entries)
     {
+        var weather;
+        
         entries.forEach(function(entry)
         {
             if(entry.status == 'disabled')
@@ -20,6 +20,8 @@ var getWeather = function(callback)
             }
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
+        
+        console.log(weather);
         
         dbManager.getRecentMeasurements(function(measurements)
         {
@@ -32,6 +34,8 @@ var getWeather = function(callback)
                        
                    });
             });
+            
+            console.log(weather);
             
             callback(weather);
         })

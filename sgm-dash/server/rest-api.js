@@ -25,7 +25,7 @@ var getWeather = function()
     {
         measurements.forEach(function(measurement)
         {
-           weather[measurement.devId].measurements.push(
+           weather[measurement.devId]['measurements'].push(
                {
                    'description' : MeasurementsLUT[measurement.quantity].desc,
                    'value' : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit

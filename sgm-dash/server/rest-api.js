@@ -10,7 +10,7 @@ var getWeather = function(callback)
 {
     dbManager.getRegisteredPublishers(function(err, entries)
     {
-        var weather;
+        var weather = [];
         
         entries.forEach(function(entry)
         {

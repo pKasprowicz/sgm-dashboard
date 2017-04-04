@@ -18,7 +18,11 @@ var getWeather = function(weather)
             }
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
+        
+        console.log(weather);
     });
+    
+    console.log(weather);
     
     dbManager.getRecentMeasurements(function(measurements)
     {

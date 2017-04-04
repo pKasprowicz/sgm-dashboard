@@ -9,7 +9,7 @@ MeasurementsLUT['humid']    = {desc : 'Wilgotność',  unit : '%'};
 var getWeather = function()
 {
     var weather = [];
-    dbManager.getRegisteredPublishers(function(entries)
+    dbManager.getRegisteredPublishers(function(err, entries)
     {
         entries.forEach(function(entry)
         {

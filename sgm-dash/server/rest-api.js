@@ -16,6 +16,7 @@ var getWeather = function(callback)
         {
             console.log(entry);
             console.log(entry.status);
+            console.log(entry.loc);
             if(entry.status == "disabled")
             {
                 return;

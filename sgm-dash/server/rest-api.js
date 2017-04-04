@@ -21,21 +21,21 @@ var getWeather = function(callback)
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
         
-        console.log(weather);
         
         dbManager.getRecentMeasurements(function(measurements)
         {
             measurements.forEach(function(measurement)
             {
+                console.log(measurement);
+                console.log(MeasurementsLUT[measurement.quantity]);
                weather[measurement.devId]['measurements'].push(
                    {
-                       description : MeasurementsLUT[measurement.quantity][desc],
-                       value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity][unit]
+                       description : MeasurementsLUT[measurement.quantity].desc,
+                       value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
                        
                    });
             });
             
-            console.log(weather);
             
             callback(weather);
         })

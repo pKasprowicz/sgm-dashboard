@@ -6,6 +6,7 @@ var deviceSchema = new Schema(
       {
         id: String,
         loc: String,
+        status: String,
         measurements :
         [
           {

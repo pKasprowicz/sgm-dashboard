@@ -1,4 +1,5 @@
 var measurementsDb = require('db-manager');
+var restApi = require('./rest-api');
 
 module.exports = function(app)
 {
@@ -90,5 +91,18 @@ module.exports = function(app)
         res.end(JSON.stringify(ob,null,2));
       });
     });
+
+  app.get("/weather", function(req, res)
+  {
+    restApi.getWeather(function(weatherData)
+    {
+      var collection = [];
+      for (var id in weatherData)
+      {
+        collection.push(weatherData[id]);
+      }
+      res.end(JSON.stringify(collection,null,2));
+    });
+  });
 
 }

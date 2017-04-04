@@ -96,8 +96,11 @@ module.exports = function(app)
   {
     restApi.getWeather(function(weatherData)
     {
-      console.log(weatherData);
-      res.json(weatherData);
+      weatherData.forEach(function(entry)
+      {
+        res.json(entry);
+      });
+      res.end();
     });
   });
 

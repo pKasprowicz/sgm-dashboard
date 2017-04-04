@@ -101,8 +101,7 @@ module.exports = function(app)
       {
         collection.push(weatherData[id]);
       }
-      res.json(collection);
-      //res.end(JSON.stringify(weatherData,null,2));
+      res.end(JSON.stringify(weatherData,null,2));
     });
   });
 

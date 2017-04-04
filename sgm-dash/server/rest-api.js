@@ -26,18 +26,15 @@ var getWeather = function(callback)
         {
             measurements.forEach(function(measurement)
             {
-                console.log(measurement);
-                console.log(MeasurementsLUT[measurement.quantity]);
                weather[measurement.devId]['measurements'].push(
                    {
                        description : MeasurementsLUT[measurement.quantity].desc,
                        value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
                        
                    });
-                   console.log(weather[measurement.devId]['measurements']);
             });
             
-            
+            console.log(weather);
             callback(weather);
         })
     });

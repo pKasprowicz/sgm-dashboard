@@ -16,6 +16,7 @@ var getWeather = function(weather)
             {
                 return;
             }
+            console.log(entry);
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
         

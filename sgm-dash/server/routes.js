@@ -96,12 +96,12 @@ module.exports = function(app)
   {
     restApi.getWeather(function(weatherData)
     {
-      var jsonData;
+      var collection = [];
       for (var id in weatherData)
       {
-        jsonData += JSON.stringify(weatherData[id],null,2);
+        collection.push(weatherData[id]);
       }
-      res.end(jsonData);
+      res.end(collection);
       //res.end(JSON.stringify(weatherData,null,2));
     });
   });

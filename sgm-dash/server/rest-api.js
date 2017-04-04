@@ -13,6 +13,7 @@ var getWeather = function()
     {
         entries.forEach(function(entry)
         {
+            console.log(entry);
             if(entry.status != 'diabled')
             {
                 return;

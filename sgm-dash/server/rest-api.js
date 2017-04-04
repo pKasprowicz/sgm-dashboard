@@ -12,11 +12,11 @@ var getWeather = function(weather)
     {
         entries.forEach(function(entry)
         {
+            console.log(entry);
             if(entry.status != 'disabled')
             {
                 return;
             }
-            console.log(entry);
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
         

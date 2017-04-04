@@ -100,7 +100,7 @@ module.exports = function(app)
       {
         console.log(entry);
       });
-      res.end();
+      res.end(JSON.stringify(weatherData,null,2));
     });
   });
 

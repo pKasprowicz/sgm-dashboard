@@ -20,6 +20,8 @@ var getWeather = function(weather)
         });
     });
     
+    console.log(weather);
+    
     dbManager.getRecentMeasurements(function(measurements)
     {
         measurements.forEach(function(measurement)

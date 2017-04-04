@@ -12,15 +12,13 @@ var getWeather = function(weather)
     {
         entries.forEach(function(entry)
         {
-            if(entry.status != 'diabled')
+            if(entry.status != 'disabled')
             {
                 return;
             }
             weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
         });
-    console.log(weather);
     });
-    
     
     dbManager.getRecentMeasurements(function(measurements)
     {

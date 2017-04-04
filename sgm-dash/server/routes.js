@@ -94,7 +94,8 @@ module.exports = function(app)
 
   app.get("/weather", function(req, res)
   {
-    var weatherInfo = restApi.getWeather();
+    var weatherInfo = [];
+    restApi.getWeather(weatherInfo);
     res.end(JSON.stringify(weatherInfo, null, 2));
   });
 

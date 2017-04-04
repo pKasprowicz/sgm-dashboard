@@ -6,9 +6,8 @@ MeasurementsLUT['press']    = {desc : 'Cisnienie',   unit : 'hPa'};
 MeasurementsLUT['temp']     = {desc : 'Temperatura', unit : 'C'};
 MeasurementsLUT['humid']    = {desc : 'Wilgotność',  unit : '%'};
 
-var getWeather = function()
+var getWeather = function(weather)
 {
-    var weather = [];
     dbManager.getRegisteredPublishers(function(err, entries)
     {
         entries.forEach(function(entry)
@@ -21,13 +20,10 @@ var getWeather = function()
         });
     });
     
-    console.log(weather);
-    
     dbManager.getRecentMeasurements(function(measurements)
     {
         measurements.forEach(function(measurement)
         {
-            console.log(weather);
            weather[measurement.devId]['measurements'].push(
                {
                    'description' : MeasurementsLUT[measurement.quantity].desc,
@@ -37,7 +33,6 @@ var getWeather = function()
         });
     })
     
-    return weather;
 }
 
 module.exports = {

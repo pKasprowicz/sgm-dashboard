@@ -34,6 +34,7 @@ var getWeather = function(callback)
                        value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
                        
                    });
+                   console.log(weather[measurement.devId]['measurements']);
             });
             
             

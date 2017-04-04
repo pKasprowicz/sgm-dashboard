@@ -29,8 +29,8 @@ var getWeather = function(callback)
             {
                weather[measurement.devId]['measurements'].push(
                    {
-                       'description' : MeasurementsLUT[measurement.quantity].desc,
-                       'value' : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
+                       description : MeasurementsLUT[measurement.quantity].desc,
+                       value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
                        
                    });
             });

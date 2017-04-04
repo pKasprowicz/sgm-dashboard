@@ -34,7 +34,6 @@ var getWeather = function(callback)
                    });
             });
             
-            console.log(weather);
             callback(weather);
         })
     });

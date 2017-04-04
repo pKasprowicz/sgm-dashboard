@@ -18,7 +18,7 @@ var getWeather = function(callback)
             {
                 return;
             }
-            weather[entry.id] = {'location' : entry.loc, 'measurements' : []};
+            weather.push({'location' : entry.loc, 'measurements' : []});
         });
         
         

@@ -99,7 +99,6 @@ module.exports = function(app)
       weatherData.forEach(function(entry)
       {
         console.log(entry);
-        res.send(JSON.stringify(entry,null,2));
       });
       res.end();
     });

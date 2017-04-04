@@ -21,6 +21,8 @@ var getWeather = function()
         });
     });
     
+    console.log(weather);
+    
     dbManager.getRecentMeasurements(function(measurements)
     {
         measurements.forEach(function(measurement)

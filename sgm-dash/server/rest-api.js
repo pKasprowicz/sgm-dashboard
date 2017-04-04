@@ -14,6 +14,8 @@ var getWeather = function(callback)
         
         entries.forEach(function(entry)
         {
+            console.log(entry);
+            console.log(entry.status);
             if(entry.status == "disabled")
             {
                 return;
@@ -29,7 +31,8 @@ var getWeather = function(callback)
                weather[measurement.devId]['measurements'].push(
                    {
                        description : MeasurementsLUT[measurement.quantity].desc,
-                       value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
+                       value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit,
+                       timestamp : measurement.timestamp
                        
                    });
             });

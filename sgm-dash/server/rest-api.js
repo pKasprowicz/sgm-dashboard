@@ -31,7 +31,7 @@ var getWeather = function(callback)
                        description : MeasurementsLUT[measurement.quantity].desc,
                        value : measurement.value + ' ' + MeasurementsLUT[measurement.quantity].unit
                        
-                   });
+                   }.toObject({getters : false}));
             });
             
             callback(weather);

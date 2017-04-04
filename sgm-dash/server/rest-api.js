@@ -13,7 +13,6 @@ var getWeather = function()
     {
         entries.forEach(function(entry)
         {
-            console.log(entry);
             if(entry.status != 'diabled')
             {
                 return;
@@ -28,6 +27,7 @@ var getWeather = function()
     {
         measurements.forEach(function(measurement)
         {
+            console.log(weather);
            weather[measurement.devId]['measurements'].push(
                {
                    'description' : MeasurementsLUT[measurement.quantity].desc,

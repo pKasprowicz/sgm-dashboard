@@ -15,7 +15,7 @@ var getWeather = function(callback)
         entries.forEach(function(entry)
         {
             console.log(entry);
-            console.log(entry.status);
+            console.log(entry.status.toString());
             if(entry.status == "disabled")
             {
                 return;

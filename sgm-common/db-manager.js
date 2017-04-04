@@ -104,6 +104,7 @@ var getRegisteredPublishers = function(resultCallback)
     })
 };
 
+
 module.exports =
 {
     storeMeasurement,

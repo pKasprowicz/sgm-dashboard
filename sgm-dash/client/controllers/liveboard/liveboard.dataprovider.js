@@ -2,7 +2,7 @@ liveBoardApp.factory('LiveData', function()
     {
 
       var DataProvider = function(){
-          this.socket = io(window.location.origin,{path: "/sgmeteo/socket.io"});
+          this.socket = io(window.location.origin,{path: "/socket.io"});
 
           var self = this;
           this.processValChangeCallback = function(){};

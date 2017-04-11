@@ -83,7 +83,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
           }
           devChartList[deviceId].forEach(function(chartDescriptor){
             chartDescriptor.values.forEach(function(dataSet){
-              $http.post('/sgmeteo/history', {devId : deviceId, target : 'air', quantity : dataSet})
+              $http.post('/history', {devId : deviceId, target : 'air', quantity : dataSet})
               .then(function(result){
                 parseHistoryData(chartDescriptor, dataSet, result.data);
               })
@@ -105,7 +105,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
 
       var fetchmeasurementData = function()
       {
-        $http.get('/sgmeteo/recent')
+        $http.get('/recent')
         .then(function(recent){
           recent.data.forEach(function(measurement){
             populateMeasurementTable(measurement);
@@ -116,7 +116,7 @@ liveBoardApp.controller('LiveboardController',function($scope, $http, $timeout, 
       }
 
       // Get the model's data
-      $http.get('/sgmeteo/deviceList')
+      $http.get('/deviceList')
         .then(function(result) {
           initializeDeviceList(result.data);
           fetchmeasurementData();
